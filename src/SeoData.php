@@ -6,6 +6,7 @@ use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Unified\Image;
 use Elegantly\Seo\Unified\SeoUnifiedData;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 
 class SeoData extends SeoUnifiedData
@@ -22,15 +23,29 @@ class SeoData extends SeoUnifiedData
         ?string $title = null,
         ?string $canonical = null,
         public ?string $description = null,
+        public ?Image $image = null,
         public ?string $robots = null,
         public ?string $sitemap = null,
         public ?array $alternates = null,
-        public ?Image $image = null,
         public ?string $locale = null,
         public ?array $schemas = null,
         public ?SeoTags $customTags = null,
     ) {
         $this->title = $title ?? config('seo.title') ?? '';
         $this->canonical = $canonical ?? URL::current();
+        $this->description = $description ?? config('seo.description');
+        $this->robots = $robots ?? config('seo.robots');
+        $this->sitemap = $sitemap ?? config('seo.sitemap');
+        $this->image = $image ?? $this->getImageFromConfig();
+        $this->locale = $locale ?? App::getLocale();
+    }
+
+    public function getImageFromConfig(): ?Image
+    {
+        if ($image = config('seo.image')) {
+            return new Image($image);
+        }
+
+        return null;
     }
 }
