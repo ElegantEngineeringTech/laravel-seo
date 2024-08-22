@@ -10,7 +10,7 @@ use Elegantly\Seo\Twitter\Cards\Summary;
 use Elegantly\Seo\Twitter\Image as TwitterImage;
 
 it('renders all standard, opengrpah and twitter tags', function () {
-    $opengraph = new SeoManager(
+    $manager = new SeoManager(
         standard: new StandardData(
             title: 'Foo',
             canonical: 'https://example.com/standard',
@@ -51,7 +51,7 @@ it('renders all standard, opengrpah and twitter tags', function () {
     );
 
     expect(
-        $opengraph->toTags()->toHtml()
+        $manager->toTags()->toHtml()
     )->toBe(implode("\n", [
         '<title >Foo</title>',
         '<meta name="description" content="Bar" />',
@@ -61,10 +61,10 @@ it('renders all standard, opengrpah and twitter tags', function () {
         //
         '<meta property="og:type" content="website" />',
         '<meta property="og:title" content="Foo" />',
+        '<meta property="og:url" content="https://example.com/opengraph" />',
         '<meta property="og:image" content="https://example.com/opengraph/image" />',
         '<meta property="og:image:url" content="https://example.com/opengraph/image" />',
         '<meta property="og:image:alt" content="Opengraph example image" />',
-        '<meta property="og:url" content="https://example.com/opengraph" />',
         '<meta property="og:description" content="Bar" />',
         '<meta property="og:locale" content="en" />',
         '<meta property="og:locale:alternate" content="en" />',

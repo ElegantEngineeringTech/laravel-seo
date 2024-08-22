@@ -16,9 +16,9 @@ class Website extends Vertical
 
     public function __construct(
         public string $title,
-        public Image $image,
         public string $url,
 
+        public ?Image $image = null,
         public ?Audio $audio = null,
         public ?string $description = null,
         public ?string $determiner = null,

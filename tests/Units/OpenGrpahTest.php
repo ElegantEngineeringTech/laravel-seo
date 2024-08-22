@@ -25,10 +25,10 @@ it('renders opengraph website tags', function () {
     )->toBe(implode("\n", [
         '<meta property="og:type" content="website" />',
         '<meta property="og:title" content="Foo" />',
+        '<meta property="og:url" content="https://example.com/opengraph" />',
         '<meta property="og:image" content="https://example.com/opengraph/image" />',
         '<meta property="og:image:url" content="https://example.com/opengraph/image" />',
         '<meta property="og:image:alt" content="Opengraph example image" />',
-        '<meta property="og:url" content="https://example.com/opengraph" />',
         '<meta property="og:description" content="Bar" />',
         '<meta property="og:locale" content="en" />',
         '<meta property="og:locale:alternate" content="fr" />',
