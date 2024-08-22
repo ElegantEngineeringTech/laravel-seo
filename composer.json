@@ -35,6 +35,9 @@
         "phpstan/phpstan-phpunit": "^1.3"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "Elegantly\\Seo\\": "src/",
             "Elegantly\\Seo\\Database\\Factories\\": "database/factories/"

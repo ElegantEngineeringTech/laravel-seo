@@ -2,11 +2,13 @@
 
 namespace Elegantly\Seo;
 
+use Elegantly\Seo\Contracts\HasSeo;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\OpenGraph\Verticals\Vertical;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
+use Elegantly\Seo\Unified\SeoUnifiedData;
 
 class SeoManager implements Taggable
 {
@@ -20,6 +22,29 @@ class SeoManager implements Taggable
         public ?array $schemas = null,
         public ?SeoTags $customTags = null,
     ) {}
+
+    public function from(
+        null|SeoData|SeoUnifiedData|SeoManager|HasSeo $value = null
+    ): SeoManager {
+
+        if ($value instanceof SeoManager) {
+            return $value;
+        }
+
+        if ($value instanceof SeoData) {
+            return $value->toManager();
+        }
+
+        if ($value instanceof SeoUnifiedData) {
+            return $value->toManager();
+        }
+
+        if ($value instanceof HasSeo) {
+            return $this->from($value->getSeoData());
+        }
+
+        return $this->from(new SeoData);
+    }
 
     public function toTags(): SeoTags
     {
