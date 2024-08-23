@@ -9,8 +9,10 @@ use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Unified\SeoUnifiedData;
+use Illuminate\Contracts\Support\Htmlable;
+use Stringable;
 
-class SeoManager implements Taggable
+class SeoManager implements Htmlable, Stringable, Taggable
 {
     /**
      * @param  null|Schema[]  $schemas
@@ -69,5 +71,15 @@ class SeoManager implements Taggable
         }
 
         return $tags;
+    }
+
+    public function toHtml(): string
+    {
+        return $this->toTags()->toHtml();
+    }
+
+    public function __toString(): string
+    {
+        return $this->toHtml();
     }
 }

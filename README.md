@@ -5,18 +5,19 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/elegantengineeringtech/laravel-seo/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/elegantengineeringtech/laravel-seo/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/elegantly/laravel-seo.svg?style=flat-square)](https://packagist.org/packages/elegantly/laravel-seo)
 
-This package offers an extremly flexible and advanced way to manage all of your seo tags. Unlike other packages that focus on the most simple and common tags, this one implement all the protocols.
+This package offers an extremely flexible and advanced way to manage all of your SEO tags. Unlike other packages that focus on the most basic and common tags, this one implements all the protocols.
 
-With this package you will be able to implement:
+With this package, you will be able to implement:
 
--   The Standard HTML tags (title, robots, ...)
--   [The Open Graph tags](https://ogp.me/), including structured properties, arrays and Object Types.
+-   The standard HTML tags (title, robots, ...)
+-   [Localization](https://developers.google.com/search/docs/specialty/international/localized-versions) with alternate tags
+-   [The Open Graph tags](https://ogp.me/), including structured properties, arrays, and Object Types
 -   [The Twitter tags](https://developer.x.com/en/docs/x-for-websites/cards/overview/abouts-cards)
 -   [Structured data (JSON-LD)](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require elegantly/laravel-seo
@@ -28,24 +29,102 @@ You can publish the config file with:
 php artisan vendor:publish --tag="laravel-seo-config"
 ```
 
-This is the contents of the published config file:
+This is the content of the published config file:
 
 ```php
 return [
 ];
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="laravel-seo-views"
-```
-
 ## Usage
 
+You can display all the SEO tags in your view simply by calling the `seo` function like this:
+
 ```php
-$seo = new Elegantly\Seo();
-echo $seo->echoPhrase('Hello, Elegantly!');
+<head>
+    {!! seo() !!}
+</head>
+```
+
+This function accepts different kinds of arguments, allowing you to take full control over your SEO.
+
+### Basic SEO
+
+The simplest way to define your SEO tags is with `Elegantly\Seo\SeoData::class`.
+This class provides a unified representation of the most common SEO tags (Open Graph, Twitter, etc.).
+It will also use the defaults defined in your config.
+
+#### From a Controller
+
+Define a `SeoData` object and pass it to the view:
+
+```php
+namespace App\Http\Controllers;
+
+use Elegantly\Seo\SeoData;
+
+class HomeController extends Controller
+{
+    function __invoke()
+    {
+        return view('home', [
+            'seo' => new SeoData(
+                title: "Homepage",
+            )
+        ]);
+    }
+}
+```
+
+Then, in your view, call `seo`:
+
+```php
+<head>
+    {!! seo($seo) !!}
+</head>
+```
+
+### Advanced SEO
+
+If you need to define your SEO tags in a more precise or complex way, you can use `\Elegantly\Seo\SeoManager::class`.
+
+This class allows you to define every tag individually.
+
+```php
+use Elegantly\Seo\SeoManager;
+use Elegantly\Seo\SeoTags;
+use Elegantly\Seo\Standard\StandardData;
+use Elegantly\Seo\OpenGraph\OpenGraph;
+use Elegantly\Seo\Twitter\Cards\Card;
+use Elegantly\Seo\Schemas\Schema;
+
+$seo = new SeoManager(
+    standard: new StandardData(
+        // ...
+    ),
+    opengraph: new OpenGraph(
+        // ...
+    ),
+    twitter: new Card(
+        // ...
+    ),
+    schemas: [
+        new Schema(
+            // ...
+        )
+    ],
+    customTags: new SeoTags(
+        // ...
+    ),
+);
+```
+
+Then, just echo it in your view:
+
+```php
+<head>
+    {!! seo($seo) !!}
+</head>
 ```
 
 ## Testing
