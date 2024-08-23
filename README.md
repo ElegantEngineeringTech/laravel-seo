@@ -28,7 +28,7 @@ composer require elegantly/laravel-seo
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-seo-config"
+php artisan vendor:publish --tag="seo-config"
 ```
 
 This is the content of the published config file:

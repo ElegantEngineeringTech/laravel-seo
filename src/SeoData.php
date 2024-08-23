@@ -31,9 +31,9 @@ class SeoData extends SeoUnifiedData
         public ?array $schemas = null,
         public ?SeoTags $customTags = null,
     ) {
-        $this->title = $title ?? config('seo.title') ?? '';
+        $this->title = $title ?? __(config('seo.title')) ?? '';
         $this->canonical = $canonical ?? URL::current();
-        $this->description = $description ?? config('seo.description');
+        $this->description = $description ?? __(config('seo.description'));
         $this->robots = $robots ?? config('seo.robots');
         $this->sitemap = $sitemap ?? config('seo.sitemap');
         $this->image = $image ?? $this->getImageFromConfig();
@@ -43,7 +43,9 @@ class SeoData extends SeoUnifiedData
     public function getImageFromConfig(): ?Image
     {
         if ($image = config('seo.image')) {
-            return new Image($image);
+            return new Image(
+                url: filter_var($image, FILTER_VALIDATE_URL) ? $image : asset($image)
+            );
         }
 
         return null;
