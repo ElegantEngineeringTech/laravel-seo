@@ -4,7 +4,7 @@ namespace Elegantly\Seo;
 
 use Elegantly\Seo\Contracts\HasSeo;
 use Elegantly\Seo\Contracts\Taggable;
-use Elegantly\Seo\OpenGraph\Verticals\Vertical;
+use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
@@ -17,7 +17,7 @@ class SeoManager implements Taggable
      */
     public function __construct(
         public ?StandardData $standard = null,
-        public ?Vertical $opengraph = null,
+        public ?OpenGraph $opengraph = null,
         public ?Card $twitter = null,
         public ?array $schemas = null,
         public ?SeoTags $customTags = null,

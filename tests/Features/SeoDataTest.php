@@ -19,10 +19,10 @@ it('renders default seo from config', function () {
         '<title >Laravel</title>',
         '<meta name="robots" content="'.$robots.'" />',
         '<link rel="canonical" href="'.$url.'" />',
-        '<meta property="og:type" content="website" />',
         '<meta property="og:title" content="Laravel" />',
         '<meta property="og:url" content="'.$url.'" />',
         '<meta property="og:locale" content="'.$locale.'" />',
+        '<meta property="og:type" content="website" />',
         '<meta name="twitter:card" content="summary" />',
         '<meta name="twitter:title" content="Laravel" />',
     ]));
@@ -42,10 +42,10 @@ it('renders default seo from config using Facade', function () {
         '<title >Laravel</title>',
         '<meta name="robots" content="'.$robots.'" />',
         '<link rel="canonical" href="'.$url.'" />',
-        '<meta property="og:type" content="website" />',
         '<meta property="og:title" content="Laravel" />',
         '<meta property="og:url" content="'.$url.'" />',
         '<meta property="og:locale" content="'.$locale.'" />',
+        '<meta property="og:type" content="website" />',
         '<meta name="twitter:card" content="summary" />',
         '<meta name="twitter:title" content="Laravel" />',
     ]));

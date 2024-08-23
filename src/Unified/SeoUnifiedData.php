@@ -3,10 +3,8 @@
 namespace Elegantly\Seo\Unified;
 
 use Elegantly\Seo\Contracts\Taggable;
-use Elegantly\Seo\OpenGraph\Image as OpenGraphImage;
 use Elegantly\Seo\OpenGraph\Locale;
-use Elegantly\Seo\OpenGraph\Verticals\Vertical;
-use Elegantly\Seo\OpenGraph\Verticals\Website;
+use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\SeoManager;
 use Elegantly\Seo\SeoTags;
@@ -14,7 +12,6 @@ use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Twitter\Cards\Summary;
-use Elegantly\Seo\Twitter\Image as TwitterImage;
 
 class SeoUnifiedData implements Taggable
 {
@@ -42,25 +39,16 @@ class SeoUnifiedData implements Taggable
         return new Summary(
             title: $this->title,
             description: $this->description,
-            image: $this->image ? new TwitterImage(
-                url: $this->image->url,
-                alt: $this->image->alt
-            ) : null,
+            image: $this->image?->toTwitter(),
         );
     }
 
-    public function toOpenGraph(): Vertical
+    public function toOpenGraph(): OpenGraph
     {
-        return new Website(
+        return new OpenGraph(
             title: $this->title,
             description: $this->description,
-            image: $this->image ? new OpenGraphImage(
-                url: $this->image->url,
-                type: $this->image->type,
-                width: $this->image->width,
-                height: $this->image->height,
-                alt: $this->image->alt,
-            ) : null,
+            image: $this->image?->toOpenGraph(),
             url: $this->canonical,
             locale: $this->locale ? new Locale(
                 locale: $this->locale,

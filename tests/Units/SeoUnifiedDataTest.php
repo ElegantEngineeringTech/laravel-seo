@@ -35,7 +35,6 @@ it('renders all standard, opengrpah and twitter tags', function () {
         '<link rel="alternate" hreflang="en" href="https://example.com/en" />',
         '<link rel="alternate" hreflang="fr" href="https://example.com/fr" />',
         //
-        '<meta property="og:type" content="website" />',
         '<meta property="og:title" content="Foo" />',
         '<meta property="og:url" content="https://example.com" />',
         '<meta property="og:image" content="https://example.com/image" />',
@@ -45,6 +44,7 @@ it('renders all standard, opengrpah and twitter tags', function () {
         '<meta property="og:locale" content="en" />',
         '<meta property="og:locale:alternate" content="en" />',
         '<meta property="og:locale:alternate" content="fr" />',
+        '<meta property="og:type" content="website" />',
         //
         '<meta name="twitter:card" content="summary" />',
         '<meta name="twitter:title" content="Foo" />',

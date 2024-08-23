@@ -5,6 +5,15 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/elegantengineeringtech/laravel-seo/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/elegantengineeringtech/laravel-seo/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/elegantly/laravel-seo.svg?style=flat-square)](https://packagist.org/packages/elegantly/laravel-seo)
 
+This package offers an extremly flexible and advanced way to manage all of your seo tags. Unlike other packages that focus on the most simple and common tags, this one implement all the protocols.
+
+With this package you will be able to implement:
+
+-   The Standard HTML tags (title, robots, ...)
+-   [The Open Graph tags](https://ogp.me/), including structured properties, arrays and Object Types.
+-   [The Twitter tags](https://developer.x.com/en/docs/x-for-websites/cards/overview/abouts-cards)
+-   [Structured data (JSON-LD)](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)
+
 ## Installation
 
 You can install the package via composer:
