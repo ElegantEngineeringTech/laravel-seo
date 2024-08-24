@@ -31,7 +31,7 @@ class SeoData extends SeoUnifiedData
         public ?array $schemas = null,
         public ?SeoTags $customTags = null,
     ) {
-        $this->title = $title ?? __(config('seo.title')) ?? '';
+        $this->title = $title ?? __(config('seo.title'));
         $this->canonical = $canonical ?? URL::current();
         $this->description = $description ?? __(config('seo.description'));
         $this->robots = $robots ?? config('seo.robots');
