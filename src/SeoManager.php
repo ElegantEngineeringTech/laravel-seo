@@ -2,12 +2,13 @@
 
 namespace Elegantly\Seo;
 
-use Elegantly\Seo\Contracts\HasSeo;
+use Elegantly\Seo\Concerns\HasSeo;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
+use Elegantly\Seo\Twitter\Cards\Summary;
 use Elegantly\Seo\Unified\SeoUnifiedData;
 use Illuminate\Contracts\Support\Htmlable;
 use Stringable;
@@ -25,16 +26,22 @@ class SeoManager implements Htmlable, Stringable, Taggable
         public ?SeoTags $customTags = null,
     ) {}
 
-    public function from(
-        null|SeoData|SeoUnifiedData|SeoManager|HasSeo $value = null
+    public static function default(): self
+    {
+        return new self(
+            standard: StandardData::default(),
+            opengraph: OpenGraph::default(),
+            twitter: Summary::default(),
+            schemas: [Schema::default()],
+        );
+    }
+
+    public static function make(
+        null|SeoUnifiedData|SeoManager|HasSeo|Taggable|SeoTags $value = null
     ): SeoManager {
 
         if ($value instanceof SeoManager) {
             return $value;
-        }
-
-        if ($value instanceof SeoData) {
-            return $value->toManager();
         }
 
         if ($value instanceof SeoUnifiedData) {
@@ -42,10 +49,20 @@ class SeoManager implements Htmlable, Stringable, Taggable
         }
 
         if ($value instanceof HasSeo) {
-            return $this->from($value->getSeoData());
+            return self::make($value->getSeo());
         }
 
-        return $this->from(new SeoData);
+        if ($value instanceof SeoTags) {
+            return new self(
+                customTags: $value
+            );
+        }
+
+        if ($value instanceof Taggable) {
+            return self::make($value->toTags());
+        }
+
+        return self::make(self::default());
     }
 
     public function toTags(): SeoTags

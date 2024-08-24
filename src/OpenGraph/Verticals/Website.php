@@ -7,7 +7,10 @@ namespace Elegantly\Seo\OpenGraph\Verticals;
  */
 class Website extends Vertical
 {
-    public string $type = 'website';
+    public function getType(): string
+    {
+        return 'website';
+    }
 
     public function __construct()
     {

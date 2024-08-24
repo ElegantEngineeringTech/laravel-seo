@@ -7,6 +7,7 @@ use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Link;
 use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Tags\Title;
+use Illuminate\Support\Facades\Request;
 
 class StandardData implements Taggable
 {
@@ -22,6 +23,27 @@ class StandardData implements Taggable
         public ?array $alternates = null,
     ) {
         //
+    }
+
+    /**
+     * @param  null|Alternate[]  $alternates
+     */
+    public static function default(
+        ?string $title = null,
+        ?string $canonical = null,
+        ?string $description = null,
+        ?string $robots = null,
+        ?string $sitemap = null,
+        ?array $alternates = null,
+    ): self {
+        return new self(
+            title: $title ?? __(config('seo.defaults.title')),
+            canonical: $canonical ?? Request::url(),
+            description: $description ?? __(config('seo.defaults.description')),
+            robots: $robots ?? config('seo.defaults.robots'),
+            sitemap: $sitemap ?? config('seo.defaults.sitemap'),
+            alternates: $alternates,
+        );
     }
 
     public function toTags(): SeoTags

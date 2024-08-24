@@ -19,4 +19,11 @@ class SeoServiceProvider extends PackageServiceProvider
             ->hasConfigFile()
             ->hasViews();
     }
+
+    public function registeringPackage(): void
+    {
+        $this->app->scoped(SeoManager::class, function () {
+            return SeoManager::default();
+        });
+    }
 }

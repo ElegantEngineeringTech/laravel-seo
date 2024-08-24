@@ -7,43 +7,61 @@ use DateTime;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Meta;
+use Illuminate\Support\Arr;
 
 abstract class Vertical implements Taggable
 {
-    public string $type;
+    abstract public function getType(): string;
 
-    public function toTags(): SeoTags
+    public function getTypeTag(): Meta
+    {
+        return new Meta(
+            property: 'og:type',
+            content: $this->getType(),
+        );
+    }
+
+    protected function formatContent(null|string|Carbon $value): ?string
+    {
+        if ($value === null) {
+            return $value;
+        }
+
+        if ($value instanceof Carbon) {
+            return $value->format(DateTime::ATOM);
+        }
+
+        return $value;
+    }
+
+    public function toTags(?string $prefix = null): SeoTags
     {
         $tags = new SeoTags;
 
-        foreach (get_object_vars($this) as $property => $content) {
+        if ($prefix === null) {
+            $tags->push($this->getTypeTag());
+        }
+
+        $prefix = $prefix ?? $this->getType();
+
+        $properties = get_object_vars($this);
+
+        foreach ($properties as $property => $content) {
 
             if ($content === null) {
                 continue;
-            } elseif ($property === 'type') {
-                $tags->push(new Meta(
-                    property: 'og:type',
-                    content: $content
-                ));
-            } elseif ($content instanceof Taggable) {
-                $tags->push(...$content->toTags());
-            } elseif ($content instanceof Carbon) {
-                $tags->push(new Meta(
-                    property: "{$this->type}:{$property}",
-                    content: $content->format(DateTime::ATOM)
-                ));
-            } elseif (is_array($content)) {
-                foreach ($content as $value) {
+            }
+
+            foreach (Arr::wrap($content) as $item) {
+
+                if ($item instanceof Vertical) {
+                    $tags->push(...$item->toTags("{$prefix}:{$property}"));
+                } else {
                     $tags->push(new Meta(
-                        property: "{$this->type}:{$property}",
-                        content: $value
+                        property: $prefix.':'.$property,
+                        content: $this->formatContent($item)
                     ));
                 }
-            } else {
-                $tags->push(new Meta(
-                    property: "{$this->type}:{$property}",
-                    content: $content
-                ));
             }
         }
 

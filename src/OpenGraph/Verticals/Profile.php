@@ -7,7 +7,10 @@ namespace Elegantly\Seo\OpenGraph\Verticals;
  */
 class Profile extends Vertical
 {
-    public string $type = 'profile';
+    public function getType(): string
+    {
+        return 'profile';
+    }
 
     /**
      * @param  null|'male'|'female'  $gender

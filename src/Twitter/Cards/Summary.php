@@ -16,4 +16,18 @@ class Summary extends Card
     ) {
         //
     }
+
+    public static function default(
+        ?string $title = null,
+        ?string $site = null,
+        ?string $description = null,
+        ?Image $image = null,
+    ): self {
+        return new self(
+            title: $title ?? __(config('seo.twitter.title') ?? config('seo.defaults.title')),
+            site: $site ?? config('seo.twitter.site'),
+            description: $description ?? config('seo.defaults.description'),
+            image: $image ?? static::getImageFromConfig(),
+        );
+    }
 }

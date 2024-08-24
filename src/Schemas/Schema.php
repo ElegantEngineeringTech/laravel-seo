@@ -6,9 +6,10 @@ use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Script;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Request;
 
 /**
- * @extends Collection<string, null|int|float|string|array|Schema>
+ * @extends Collection<int|string, mixed>
  */
 class Schema extends Collection implements Taggable
 {
@@ -20,5 +21,20 @@ class Schema extends Collection implements Taggable
                 content: $this->toJson(),
             ),
         ]);
+    }
+
+    public static function default(): self
+    {
+        $schema = new self;
+
+        return $schema->merge([
+            '@context' => 'https://schema.org',
+            '@type' => 'WebPage',
+            'name' => __(config('seo.defaults.title')),
+            'description' => __(config('seo.defaults.description')),
+            'image' => config('seo.defaults.image.url'),
+            'url' => Request::url(),
+            ...config('seo.schema.defaults', []),
+        ])->filter();
     }
 }

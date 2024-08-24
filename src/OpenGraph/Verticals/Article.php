@@ -9,11 +9,14 @@ use Carbon\Carbon;
  */
 class Article extends Vertical
 {
-    public string $type = 'article';
+    public function getType(): string
+    {
+        return 'article';
+    }
 
     /**
      * @param  null|string[]  $tag
-     * @param  null|string[]  $author
+     * @param  null|(string|Profile)[]  $author
      */
     public function __construct(
         public ?Carbon $published_time = null,
