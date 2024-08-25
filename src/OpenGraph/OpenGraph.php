@@ -32,7 +32,6 @@ class OpenGraph implements Taggable
     public static function default(
         ?string $title = null,
         ?string $url = null,
-
         ?Image $image = null,
         ?Audio $audio = null,
         ?string $description = null,
@@ -63,7 +62,7 @@ class OpenGraph implements Taggable
 
         if ($url) {
             return new Image(
-                url: $url,
+                url: filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url),
                 type: config('seo.opengraph.image.type') ?? config('seo.defaults.image.type'),
                 width: config('seo.opengraph.image.width') ?? config('seo.defaults.image.width'),
                 height: config('seo.opengraph.image.height') ?? config('seo.defaults.image.height'),

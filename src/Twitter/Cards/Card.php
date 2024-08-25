@@ -34,7 +34,7 @@ abstract class Card implements Taggable
 
         if ($url) {
             return new Image(
-                url: $url,
+                url: filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url),
                 alt: config('seo.twitter.image.alt') ?? config('seo.defaults.image.alt')
             );
         }

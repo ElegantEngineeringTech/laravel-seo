@@ -34,7 +34,7 @@ class Schema extends Collection implements Taggable
             '@type' => 'WebPage',
             'name' => __(config('seo.defaults.title')),
             'description' => __(config('seo.defaults.description')),
-            'image' => config('seo.defaults.image.url'),
+            'image' => static::getImageFromConfig(),
             'url' => Request::url(),
         ]);
 
@@ -47,5 +47,16 @@ class Schema extends Collection implements Taggable
                 'url' => $url,
             ]))
             ->filter();
+    }
+
+    public static function getImageFromConfig(): ?string
+    {
+        $url = config('seo.defaults.image.url');
+
+        if ($url) {
+            return filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url);
+        }
+
+        return null;
     }
 }
