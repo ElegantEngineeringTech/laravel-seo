@@ -2,7 +2,6 @@
 
 namespace Elegantly\Seo;
 
-use Elegantly\Seo\Concerns\HasSeo;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Schemas\Schema;
@@ -38,19 +37,6 @@ class SeoManager implements Htmlable, Stringable, Taggable
             twitter: Summary::default(),
             schemas: [Schema::default()],
         );
-    }
-
-    public static function make(null|HasSeo|SeoManager $value = null): SeoManager
-    {
-        if ($value instanceof SeoManager) {
-            return $value;
-        }
-
-        if ($value instanceof HasSeo) {
-            return $value->getSeo();
-        }
-
-        return static::default();
     }
 
     public function toTags(): SeoTags

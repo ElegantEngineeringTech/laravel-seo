@@ -8,7 +8,7 @@ it('renders standard tags', function () {
         title: 'Foo',
         canonical: 'https://example.com/standard',
         description: 'Bar',
-        keywords: ["foo", "bar"],
+        keywords: ['foo', 'bar'],
         alternates: [
             new Alternate(
                 hreflang: 'en',

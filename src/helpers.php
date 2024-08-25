@@ -10,6 +10,10 @@ if (! function_exists('seo')) {
             return \Elegantly\Seo\Facades\SeoManager::current();
         }
 
-        return SeoManager::make($value);
+        if ($value instanceof HasSeo) {
+            return $value->getSeo();
+        }
+
+        return $value;
     }
 }
