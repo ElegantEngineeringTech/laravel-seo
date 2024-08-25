@@ -23,18 +23,29 @@ class Schema extends Collection implements Taggable
         ]);
     }
 
-    public static function default(): self
-    {
-        $schema = new self;
-
-        return $schema->merge([
+    public static function default(
+        ?string $title = null,
+        ?string $url = null,
+        ?string $description = null,
+        ?string $image = null,
+    ): self {
+        $schema = new self([
             '@context' => 'https://schema.org',
             '@type' => 'WebPage',
             'name' => __(config('seo.defaults.title')),
             'description' => __(config('seo.defaults.description')),
             'image' => config('seo.defaults.image.url'),
             'url' => Request::url(),
-            ...config('seo.schema.defaults', []),
-        ])->filter();
+        ]);
+
+        return $schema
+            ->merge(config('seo.schema.defaults', []))
+            ->merge(array_filter([
+                'name' => $title,
+                'description' => $description,
+                'image' => $image,
+                'url' => $url,
+            ]))
+            ->filter();
     }
 }

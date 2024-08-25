@@ -5,6 +5,7 @@ namespace Elegantly\Seo;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Schemas\Schema;
+use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Twitter\Cards\Summary;
@@ -29,13 +30,46 @@ class SeoManager implements Htmlable, Stringable, Taggable
         return $this;
     }
 
-    public static function default(): self
-    {
+    /**
+     * @param  null|string|string[]  $keywords
+     * @param  null|Alternate[]  $alternates
+     */
+    public static function default(
+        ?string $title = null,
+        ?string $url = null,
+        ?string $description = null,
+        null|string|array $keywords = null,
+        ?SeoImage $image = null,
+        ?string $robots = null,
+        ?string $sitemap = null,
+        ?array $alternates = null,
+    ): self {
         return new self(
-            standard: StandardData::default(),
-            opengraph: OpenGraph::default(),
-            twitter: Summary::default(),
-            schemas: [Schema::default()],
+            standard: StandardData::default(
+                $title,
+                $url,
+                $description,
+                $keywords,
+                $robots,
+                $sitemap,
+                $alternates
+            ),
+            opengraph: OpenGraph::default(
+                title: $title,
+                url: $url,
+                image: $image?->toOpenGraph(),
+            ),
+            twitter: Summary::default(
+                title: $title,
+                description: $description,
+                image: $image?->toTwitter(),
+            ),
+            schemas: [Schema::default(
+                title: $title,
+                url: $url,
+                description: $description,
+                image: $image?->secure_url ?? $image?->url,
+            )],
         );
     }
 

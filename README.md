@@ -7,7 +7,7 @@
 
 ![laravel-seo](https://repository-images.githubusercontent.com/845966143/6ff7437c-852d-41eb-8b2f-927551506a13)
 
-This package offers an extremely flexible and advanced way to manage all of your SEO tags. Unlike other packages that focus on the most basic and common tags, this one implements all the protocols.
+This package offers an extremely flexible and advanced way to manage all of your SEO tags.
 
 With this package, you will be able to implement:
 
@@ -36,63 +36,135 @@ This is the content of the published config file:
 ```php
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Title
-    |--------------------------------------------------------------------------
-    |
-    | This is the default value used for <title>, "og:title", "twitter:title"
-    |
-    */
-    'title' => env('APP_NAME', 'Laravel'),
+    'defaults' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Default Title
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <title>, "og:title", "twitter:title"
+        |
+        */
+        'title' => env('APP_NAME', 'Laravel'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Description
-    |--------------------------------------------------------------------------
-    |
-    | This is the default value used for <meta name="description">, <meta property="og:description">, <meta name="twitter:description">
-    |
-    */
-    'description' => null,
+        /*
+        |--------------------------------------------------------------------------
+        | Default Description
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="description">, <meta property="og:description">, <meta name="twitter:description">
+        |
+        */
+        'description' => null,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Image path
-    |--------------------------------------------------------------------------
-    |
-    | This is the default value used for <meta property="og:image">, <meta name="twitter:image">
-    | You can use relative path like "/opengraph.png" or url like "https://example.com/opengraph.png"
-    |
-    */
-    'image' => null,
+        /*
+        |--------------------------------------------------------------------------
+        | Default Keywords
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="keywords">
+        | Type supported: string or array of strings
+        |
+        */
+        'keywords' => null,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Robots
-    |--------------------------------------------------------------------------
-    |
-    | This is the default value used for <meta name="robots">
-    | See Google documentation here: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag?hl=fr#directives
-    |
-    */
-    'robots' => 'max-snippet:-1,max-image-preview:large,max-video-preview:-1',
+        /*
+        |--------------------------------------------------------------------------
+        | Default Image path
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta property="og:image">, <meta name="twitter:image">
+        | You can use relative path like "/opengraph.png" or url like "https://example.com/opengraph.png"
+        |
+        */
+        'image' => null,
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Sitemap path
-    |--------------------------------------------------------------------------
-    |
-    | This is the default value used for <link rel="sitemap">
-    | You can use relative path like "/sitemap.xml" or url like "https://example.com/sitemap.xml"
-    |
-    */
-    'sitemap' => null,
+        /*
+        |--------------------------------------------------------------------------
+        | Default Robots
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="robots">
+        | See Google documentation here: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag?hl=fr#directives
+        |
+        */
+        'robots' => 'max-snippet:-1,max-image-preview:large,max-video-preview:-1',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Sitemap path
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <link rel="sitemap">
+        | You can use relative path like "/sitemap.xml" or url like "https://example.com/sitemap.xml"
+        |
+        */
+        'sitemap' => null,
+    ],
+
+    /**
+     * @see https://ogp.me/
+     */
+    'opengraph' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Default Site Name
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta property="og:site_name" />
+        | If null: config('app.name') is used.
+        |
+        */
+        'site_name' => null,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Determiner
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta property="og:determiner" />
+        | Possible values are: a, an, the, "", auto
+        |
+        */
+        'determiner' => '',
+    ],
+
+    /**
+     * @see https://developer.x.com/en/docs/x-for-websites/cards/overview/abouts-cards
+     */
+    'twitter' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Default Twitter username
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="twitter:site" />
+        | Example: @X
+        |
+        */
+        'site' => null,
+    ],
+
+    /**
+     * @see https://schema.org/WebPage
+     */
+    'schema' => [
+        /*
+        |--------------------------------------------------------------------------
+        | Default WebPage schema
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for the schema WebPage
+        | @see https://schema.org/WebPage for all available properties
+        |
+        */
+        'defaults' => [],
+    ],
 
 ];
 ```
 
-## Usage
+## Introduction
 
 You can display all the SEO tags in your view simply by calling the `seo` function like this:
 
@@ -102,29 +174,52 @@ You can display all the SEO tags in your view simply by calling the `seo` functi
 </head>
 ```
 
-This function accepts different kinds of arguments, allowing you to take full control over your SEO.
+This will render all the default tags:
 
-### Basic SEO
+```html
+<title>Home</title>
+<meta name="robots" content="'.$robots.'" />
+<link
+    rel="canonical"
+    href="max-snippet:-1,max-image-preview:large,max-video-preview:-1"
+/>
+<!-- opengraph -->
+<meta property="og:title" content="Laravel" />
+<meta property="og:url" content="https://exemple.com" />
+<meta property="og:locale" content="en" />
+<meta property="og:site_name" content="Laravel" />
+<meta property="og:type" content="website" />
+<!-- twitter / X -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Laravel" />
+<!-- JSON+LD -->
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Home",
+        "url": "https://example.com"
+    }
+</script>
+```
 
-The simplest way to define your SEO tags is with `Elegantly\Seo\SeoData::class`.
-This class provides a unified representation of the most common SEO tags (Open Graph, Twitter, etc.).
-It will also use the defaults defined in your config.
+### Basic Usage
 
 #### From a Controller
 
-Define a `SeoData` object and pass it to the view:
+Most of the time, your will want to define you seo tags from a controller
 
 ```php
 namespace App\Http\Controllers;
 
-use Elegantly\Seo\SeoData;
+use \Elegantly\Seo\SeoManager;
 
 class HomeController extends Controller
 {
     function __invoke()
     {
         return view('home', [
-            'seo' => new SeoData(
+            'seo' => SeoManager::default(
                 title: "Homepage",
             )
         ]);
