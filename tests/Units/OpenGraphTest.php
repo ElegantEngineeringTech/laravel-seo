@@ -4,6 +4,7 @@ use Elegantly\Seo\OpenGraph\Image;
 use Elegantly\Seo\OpenGraph\Locale;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\OpenGraph\Verticals\Article;
+use Elegantly\Seo\OpenGraph\Verticals\Website;
 
 it('renders opengraph website tags', function () {
     $opengraph = new OpenGraph(
@@ -17,7 +18,8 @@ it('renders opengraph website tags', function () {
         locale: new Locale(
             locale: 'en',
             alternate: ['fr', 'it']
-        )
+        ),
+        vertical: new Website
 
     );
 

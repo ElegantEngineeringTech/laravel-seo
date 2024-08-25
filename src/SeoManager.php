@@ -9,7 +9,6 @@ use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Twitter\Cards\Summary;
-use Elegantly\Seo\Unified\SeoUnifiedData;
 use Illuminate\Contracts\Support\Htmlable;
 use Stringable;
 
@@ -26,6 +25,11 @@ class SeoManager implements Htmlable, Stringable, Taggable
         public ?SeoTags $customTags = null,
     ) {}
 
+    public function current(): static
+    {
+        return $this;
+    }
+
     public static function default(): self
     {
         return new self(
@@ -36,33 +40,17 @@ class SeoManager implements Htmlable, Stringable, Taggable
         );
     }
 
-    public static function make(
-        null|SeoUnifiedData|SeoManager|HasSeo|Taggable|SeoTags $value = null
-    ): SeoManager {
-
+    public static function make(null|HasSeo|SeoManager $value = null): SeoManager
+    {
         if ($value instanceof SeoManager) {
             return $value;
         }
 
-        if ($value instanceof SeoUnifiedData) {
-            return $value->toManager();
-        }
-
         if ($value instanceof HasSeo) {
-            return self::make($value->getSeo());
+            return $value->getSeo();
         }
 
-        if ($value instanceof SeoTags) {
-            return new self(
-                customTags: $value
-            );
-        }
-
-        if ($value instanceof Taggable) {
-            return self::make($value->toTags());
-        }
-
-        return self::make(self::default());
+        return static::default();
     }
 
     public function toTags(): SeoTags

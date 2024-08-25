@@ -2,9 +2,9 @@
 
 namespace Elegantly\Seo\Concerns;
 
-use Elegantly\Seo\Contracts\Taggable;
+use Elegantly\Seo\SeoManager;
 
 interface HasSeo
 {
-    public function getSeo(): Taggable;
+    public function getSeo(): SeoManager;
 }

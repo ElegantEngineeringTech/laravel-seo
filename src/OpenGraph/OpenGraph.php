@@ -24,7 +24,7 @@ class OpenGraph implements Taggable
         public ?string $site_name = null,
         public ?Video $video = null,
 
-        public Vertical $vertical = new Website,
+        public ?Vertical $vertical = null,
     ) {
         //
     }
@@ -41,7 +41,7 @@ class OpenGraph implements Taggable
         ?string $site_name = null,
         ?Video $video = null,
 
-        Vertical $vertical = new Website,
+        ?Vertical $vertical = new Website,
     ): self {
         return new self(
             title: $title ?? __(config('seo.opengraph.title') ?? config('seo.defaults.title')),

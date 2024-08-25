@@ -10,7 +10,8 @@ class Audio implements Taggable
 {
     public function __construct(
         public string $url,
-        public string $type,
+        public ?string $secure_url = null,
+        public ?string $type = null,
     ) {
         //
     }
@@ -25,10 +26,12 @@ class Audio implements Taggable
         ]);
 
         foreach (get_object_vars($this) as $property => $content) {
-            $tags->push(new Meta(
-                property: "og:audio:{$property}",
-                content: $content,
-            ));
+            if ($content !== null) {
+                $tags->push(new Meta(
+                    property: "og:audio:{$property}",
+                    content: $content,
+                ));
+            }
         }
 
         return $tags;

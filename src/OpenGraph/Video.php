@@ -10,6 +10,7 @@ class Video implements Taggable
 {
     public function __construct(
         public string $url,
+        public ?string $secure_url = null,
         public ?string $type = null,
         public ?string $width = null,
         public ?string $height = null,

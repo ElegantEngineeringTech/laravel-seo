@@ -6,14 +6,14 @@ use Illuminate\Support\Facades\Request;
 
 it('renders default seo from config using Facade', function () {
 
-    $data = SeoManager::make();
+    $manager = SeoManager::current();
 
     $url = Request::url();
     $locale = App::getLocale();
     $robots = config('seo.defaults.robots');
 
     expect(
-        $data->toTags()->toHtml()
+        $manager->toTags()->toHtml()
     )->toBe(implode("\n", [
         // standard
         '<title >Laravel</title>',

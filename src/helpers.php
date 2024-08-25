@@ -2,11 +2,14 @@
 
 use Elegantly\Seo\Concerns\HasSeo;
 use Elegantly\Seo\SeoManager;
-use Elegantly\Seo\Unified\SeoUnifiedData;
 
 if (! function_exists('seo')) {
-    function seo(null|SeoUnifiedData|SeoManager|HasSeo $value = null): SeoManager
+    function seo(null|HasSeo|SeoManager $value = null): SeoManager
     {
-        return \Elegantly\Seo\Facades\SeoManager::make($value);
+        if ($value === null) {
+            return \Elegantly\Seo\Facades\SeoManager::current();
+        }
+
+        return SeoManager::make($value);
     }
 }

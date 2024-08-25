@@ -2,13 +2,10 @@
 
 namespace Elegantly\Seo\Facades;
 
-use Elegantly\Seo\Concerns\HasSeo;
-use Elegantly\Seo\SeoData;
-use Elegantly\Seo\Unified\SeoUnifiedData;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Elegantly\Seo\SeoManager make(null|SeoData|SeoUnifiedData|\Elegantly\Seo\SeoManager|HasSeo $value = null)
+ * @method static \Elegantly\Seo\SeoManager current()
  *
  * @see \Elegantly\Seo\Seo
  */

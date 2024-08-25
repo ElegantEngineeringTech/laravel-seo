@@ -13,6 +13,11 @@ abstract class Vertical implements Taggable
 {
     abstract public function getType(): string;
 
+    public function getNamespace(): string
+    {
+        return $this->getType();
+    }
+
     public function getTypeTag(): Meta
     {
         return new Meta(
@@ -40,9 +45,8 @@ abstract class Vertical implements Taggable
 
         if ($prefix === null) {
             $tags->push($this->getTypeTag());
+            $prefix = $this->getNamespace();
         }
-
-        $prefix = $prefix ?? $this->getType();
 
         $properties = get_object_vars($this);
 

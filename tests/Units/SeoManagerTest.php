@@ -3,6 +3,7 @@
 use Elegantly\Seo\OpenGraph\Image;
 use Elegantly\Seo\OpenGraph\Locale;
 use Elegantly\Seo\OpenGraph\OpenGraph;
+use Elegantly\Seo\OpenGraph\Verticals\Website;
 use Elegantly\Seo\SeoManager;
 use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Standard\StandardData;
@@ -37,7 +38,8 @@ it('renders all standard, opengraph and twitter tags', function () {
             locale: new Locale(
                 locale: 'en',
                 alternate: ['en', 'fr']
-            )
+            ),
+            vertical: new Website
         ),
         twitter: new Summary(
             title: 'Foo',
