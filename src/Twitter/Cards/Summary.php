@@ -8,6 +8,9 @@ class Summary extends Card
 {
     public string $card = 'summary';
 
+    /**
+     * @param  ?string  $site  The twitter handle like "@X"
+     */
     public function __construct(
         public string $title,
         public ?string $description = null,

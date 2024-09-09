@@ -6,7 +6,6 @@ use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Script;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Request;
 
 /**
  * @extends Collection<int|string, mixed>
@@ -21,42 +20,5 @@ class Schema extends Collection implements Taggable
                 content: $this->toJson(),
             ),
         ]);
-    }
-
-    public static function default(
-        ?string $title = null,
-        ?string $url = null,
-        ?string $description = null,
-        ?string $image = null,
-    ): self {
-        $schema = new self([
-            '@context' => 'https://schema.org',
-            '@type' => 'WebPage',
-            'name' => __(config('seo.defaults.title')),
-            'description' => __(config('seo.defaults.description')),
-            'image' => static::getImageFromConfig(),
-            'url' => Request::url(),
-        ]);
-
-        return $schema
-            ->merge(config('seo.schema.defaults', []))
-            ->merge(array_filter([
-                'name' => $title,
-                'description' => $description,
-                'image' => $image,
-                'url' => $url,
-            ]))
-            ->filter();
-    }
-
-    public static function getImageFromConfig(): ?string
-    {
-        $url = config('seo.defaults.image.url');
-
-        if ($url) {
-            return filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url);
-        }
-
-        return null;
     }
 }

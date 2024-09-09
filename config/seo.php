@@ -124,7 +124,7 @@ return [
         | @see https://schema.org/WebPage for all available properties
         |
         */
-        'defaults' => [],
+        'webpage' => [],
     ],
 
 ];

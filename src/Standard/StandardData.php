@@ -42,7 +42,7 @@ class StandardData implements Taggable
         ?array $alternates = null,
     ): self {
         return new self(
-            title: $title ?? __(config('seo.defaults.title')),
+            title: $title ?? __(config('seo.defaults.title') ?? config('app.name')),
             canonical: $canonical ?? Request::url(),
             description: $description ?? __(config('seo.defaults.description')),
             keywords: $keywords ?? __(config('seo.defaults.keywords')),
