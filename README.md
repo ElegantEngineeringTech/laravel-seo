@@ -158,7 +158,7 @@ return [
         | @see https://schema.org/WebPage for all available properties
         |
         */
-        'defaults' => [],
+        'webpage' => [],
     ],
 
 ];
@@ -207,7 +207,9 @@ This will render all the default tags:
 
 #### From a Controller
 
-Most of the time, your will want to define you seo tags from a controller
+Most of the time, your will want to define you seo tags from a controller.
+Calling the `seo()` helper will return the current `SeoManager` instance.
+This instance is available anywhere in your app through the service container.
 
 ```php
 namespace App\Http\Controllers;
@@ -219,9 +221,9 @@ class HomeController extends Controller
     function __invoke()
     {
         return view('home', [
-            'seo' => SeoManager::default(
-                title: "Homepage",
-            )
+            'seo' => seo()
+                ->setTitle("Homepage")
+                ->setDescription("The homepage description"),
         ]);
     }
 }
@@ -231,7 +233,7 @@ Then, in your view, call `seo`:
 
 ```php
 <head>
-    {!! seo($seo) !!}
+    {!! $seo !!}
 </head>
 ```
 
@@ -274,7 +276,7 @@ Then, just echo it in your view:
 
 ```php
 <head>
-    {!! seo($seo) !!}
+    {!! $seo !!}
 </head>
 ```
 
