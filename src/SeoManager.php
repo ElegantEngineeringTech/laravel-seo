@@ -42,7 +42,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
-     * @param  null|Standard|(Closure(Standard):null|Standard)  $value
+     * @param  null|Standard|(Closure(Standard):(null|Standard))  $value
      * @return $this
      */
     public function setStandard(null|Standard|Closure $value): static
@@ -57,7 +57,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
-     * @param  null|OpenGraph|(Closure(OpenGraph):null|OpenGraph)  $value
+     * @param  null|OpenGraph|(Closure(OpenGraph):(null|OpenGraph))  $value
      * @return $this
      */
     public function setOpengraph(null|OpenGraph|Closure $value): static
@@ -72,7 +72,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
-     * @param  null|Card|(Closure(Card):null|Card)  $value
+     * @param  null|Card|(Closure(Card):(null|Card))  $value
      * @return $this
      */
     public function setTwitter(null|Card|Closure $value): static
@@ -87,7 +87,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
-     * @param  null|WebPage|(Closure(WebPage):null|WebPage)  $value
+     * @param  null|WebPage|(Closure(WebPage):(null|WebPage))  $value
      * @return $this
      */
     public function setWebpage(null|WebPage|Closure $value): static
@@ -99,6 +99,33 @@ class SeoManager implements Htmlable, Stringable, Taggable
         }
 
         return $this;
+    }
+
+    /**
+     * @param  null|Schema[]|(Closure(Schema[]):(null|Schema[]))  $value
+     * @return $this
+     */
+    public function setSchemas(null|array|Closure $value): static
+    {
+        if ($value instanceof Closure) {
+            $this->schemas = $value($this->schemas ?? []);
+        } else {
+            $this->schemas = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function addSchema(Schema $value): static
+    {
+        return $this->setSchemas(function ($schemas) use ($value) {
+            $schemas[] = $value;
+
+            return $schemas;
+        });
     }
 
     public function setTitle(string $value): static
