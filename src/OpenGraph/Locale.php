@@ -5,9 +5,12 @@ namespace Elegantly\Seo\OpenGraph;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Meta;
+use Elegantly\Seo\Traits\DeepClone;
 
 class Locale implements Taggable
 {
+    use DeepClone;
+
     /**
      * @param  string[]  $alternate
      */

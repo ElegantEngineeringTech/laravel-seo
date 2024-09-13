@@ -2,11 +2,14 @@
 
 namespace Elegantly\Seo\Tags;
 
+use Elegantly\Seo\Traits\DeepClone;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Collection;
 
 abstract class TagVoid implements Htmlable
 {
+    use DeepClone;
+
     public string $tag;
 
     /**

@@ -10,6 +10,7 @@ use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Schemas\WebPage;
 use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Standard\Standard;
+use Elegantly\Seo\Traits\DeepClone;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Twitter\Cards\Summary;
 use Illuminate\Contracts\Support\Htmlable;
@@ -20,6 +21,7 @@ use Stringable;
 class SeoManager implements Htmlable, Stringable, Taggable
 {
     use Conditionable;
+    use DeepClone;
 
     /**
      * @param  null|Schema[]  $schemas

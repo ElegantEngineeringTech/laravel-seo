@@ -7,11 +7,14 @@ use Elegantly\Seo\OpenGraph\Verticals\Vertical;
 use Elegantly\Seo\OpenGraph\Verticals\Website;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Meta;
+use Elegantly\Seo\Traits\DeepClone;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 
 class OpenGraph implements Taggable
 {
+    use DeepClone;
+
     public function __construct(
         public string $title,
         public string $url,

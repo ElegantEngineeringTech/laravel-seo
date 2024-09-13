@@ -4,9 +4,13 @@ use Elegantly\Seo\OpenGraph\Image;
 use Elegantly\Seo\OpenGraph\Locale;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\OpenGraph\Verticals\Website;
+use Elegantly\Seo\Schemas\Schema;
+use Elegantly\Seo\Schemas\WebPage;
 use Elegantly\Seo\SeoManager;
+use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Standard\Standard;
+use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Twitter\Cards\Summary;
 use Elegantly\Seo\Twitter\Image as TwitterImage;
 
@@ -79,4 +83,53 @@ it('renders all standard, opengraph and twitter tags', function () {
         '<meta name="twitter:image" content="https://example.com/twitter/image" />',
         '<meta name="twitter:image:alt" content="Twitter example image" />',
     ]));
+});
+
+it('can clone itself with new references', function () {
+    $base = new SeoManager(
+        standard: new Standard(
+            title: 'foo',
+            canonical: 'bar',
+            alternates: [
+                new Alternate(
+                    hreflang: 'foo',
+                    href: 'bar'
+                ),
+            ]
+        ),
+        opengraph: new OpenGraph(
+            title: 'foo',
+            url: 'bar',
+            image: new Image(
+                url: 'foo',
+            )
+        ),
+        twitter: new Summary(
+            title: 'foo',
+        ),
+        webpage: new WebPage,
+        schemas: [
+            new Schema,
+        ],
+        customTags: new SeoTags([
+            new Meta(
+                name: 'foo',
+                content: 'bar'
+            ),
+        ])
+    );
+
+    $clone = clone $base;
+
+    expect($clone)->not->toBe($base);
+
+    expect($clone->standard)->not->toBe($base->standard);
+    expect($clone->opengraph)->not->toBe($base->opengraph);
+    expect($clone->twitter)->not->toBe($base->twitter);
+    expect($clone->webpage)->not->toBe($base->webpage);
+    expect($clone->schemas)->not->toBe($base->schemas);
+    expect($clone->schemas[0])->not->toBe($base->schemas[0]);
+    expect($clone->customTags)->not->toBe($base->customTags);
+    expect($clone->customTags[0])->not->toBe($base->customTags[0]);
+    expect($clone->customTags[0]->properties)->not->toBe($base->customTags[0]->properties);
 });

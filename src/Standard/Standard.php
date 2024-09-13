@@ -7,6 +7,7 @@ use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Link;
 use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Tags\Title;
+use Elegantly\Seo\Traits\DeepClone;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Request;
  */
 class Standard implements Taggable
 {
+    use DeepClone;
+
     /**
      * @param  null|string|string[]  $keywords
      * @param  null|Alternate[]  $alternates

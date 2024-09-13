@@ -5,10 +5,13 @@ namespace Elegantly\Seo\Twitter\Cards;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Meta;
+use Elegantly\Seo\Traits\DeepClone;
 use Elegantly\Seo\Twitter\Image;
 
 abstract class Card implements Taggable
 {
+    use DeepClone;
+
     public function toTags(): SeoTags
     {
         $tags = new SeoTags;

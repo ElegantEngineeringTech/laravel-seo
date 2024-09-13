@@ -7,10 +7,13 @@ use DateTime;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Meta;
+use Elegantly\Seo\Traits\DeepClone;
 use Illuminate\Support\Arr;
 
 abstract class Vertical implements Taggable
 {
+    use DeepClone;
+
     abstract public function getType(): string;
 
     public function getNamespace(): string
