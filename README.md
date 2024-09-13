@@ -56,22 +56,72 @@ return [
         | Default Description
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta name="description">, <meta property="og:description">,
-        | <meta name="twitter:description">
+        | This is the default value used for <meta name="description">,
+        | <meta property="og:description">, <meta name="twitter:description">
         |
         */
         'description' => null,
 
         /*
         |--------------------------------------------------------------------------
+        | Default Author
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="author">
+        |
+        */
+        'author' => null,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Generator
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="generator">
+        |
+        */
+        'generator' => null,
+
+        /*
+        |--------------------------------------------------------------------------
         | Default Keywords
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta name="keywords">.
-        | Supports string or array of strings.
+        | This is the default value used for <meta name="keywords">
+        | Types supported: string or array of strings
         |
         */
         'keywords' => null,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Referrer
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="referrer">
+        |
+        */
+        'referrer' => null,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Theme color
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="theme-color">
+        |
+        */
+        'theme-color' => null,
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Color Scheme
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta name="color-scheme">
+        |
+        */
+        'color-scheme' => null,
 
         /*
         |--------------------------------------------------------------------------
@@ -79,7 +129,7 @@ return [
         |--------------------------------------------------------------------------
         |
         | This is the default value used for <meta property="og:image">, <meta name="twitter:image">
-        | You can use a relative path (e.g., "/opengraph.png") or a full URL (e.g., "https://example.com/opengraph.png")
+        | You can use relative path like "/opengraph.png" or url like "https://example.com/opengraph.png"
         |
         */
         'image' => null,
@@ -89,19 +139,19 @@ return [
         | Default Robots
         |--------------------------------------------------------------------------
         |
-        | This is the default value for the <meta name="robots"> tag.
-        | Refer to Google’s documentation: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag?hl=en
+        | This is the default value used for <meta name="robots">
+        | See Google documentation here: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag?hl=fr#directives
         |
         */
         'robots' => 'max-snippet:-1,max-image-preview:large,max-video-preview:-1',
 
         /*
         |--------------------------------------------------------------------------
-        | Default Sitemap Path
+        | Default Sitemap path
         |--------------------------------------------------------------------------
         |
-        | This is the default value for the <link rel="sitemap"> tag.
-        | You can use a relative path (e.g., "/sitemap.xml") or a full URL (e.g., "https://example.com/sitemap.xml")
+        | This is the default value used for <link rel="sitemap">
+        | You can use relative path like "/sitemap.xml" or url like "https://example.com/sitemap.xml"
         |
         */
         'sitemap' => null,
@@ -116,8 +166,8 @@ return [
         | Default Site Name
         |--------------------------------------------------------------------------
         |
-        | This is the default value for <meta property="og:site_name">.
-        | If null, config('app.name') will be used.
+        | This is the default value used for <meta property="og:site_name" />
+        | If null: config('app.name') is used.
         |
         */
         'site_name' => null,
@@ -127,8 +177,8 @@ return [
         | Default Determiner
         |--------------------------------------------------------------------------
         |
-        | This is the default value for <meta property="og:determiner">.
-        | Possible values: a, an, the, "", auto
+        | This is the default value used for <meta property="og:determiner" />
+        | Possible values are: a, an, the, "", auto
         |
         */
         'determiner' => '',
@@ -140,10 +190,10 @@ return [
     'twitter' => [
         /*
         |--------------------------------------------------------------------------
-        | Default Twitter Username
+        | Default Twitter username
         |--------------------------------------------------------------------------
         |
-        | This is the default value for <meta name="twitter:site">.
+        | This is the default value used for <meta name="twitter:site" />
         | Example: @X
         |
         */
@@ -156,11 +206,11 @@ return [
     'schema' => [
         /*
         |--------------------------------------------------------------------------
-        | Default WebPage Schema
+        | Default WebPage schema
         |--------------------------------------------------------------------------
         |
-        | This is the default value for the schema.org WebPage.
-        | For available properties, refer to https://schema.org/WebPage.
+        | This is the default value used for the schema WebPage
+        | @see https://schema.org/WebPage for all available properties
         |
         */
         'webpage' => [],

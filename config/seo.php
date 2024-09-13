@@ -18,7 +18,8 @@ return [
         | Default Description
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta name="description">, <meta property="og:description">, <meta name="twitter:description">
+        | This is the default value used for <meta name="description">,
+        | <meta property="og:description">, <meta name="twitter:description">
         |
         */
         'description' => null,
@@ -49,7 +50,7 @@ return [
         |--------------------------------------------------------------------------
         |
         | This is the default value used for <meta name="keywords">
-        | Type supported: string or array of strings
+        | Types supported: string or array of strings
         |
         */
         'keywords' => null,
