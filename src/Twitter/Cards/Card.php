@@ -30,7 +30,7 @@ abstract class Card implements Taggable
 
     public static function getImageFromConfig(): ?Image
     {
-        $url = config('seo.twitter.image.url') ?? config('seo.defaults.image.url');
+        $url = config('seo.twitter.image.url') ?? config('seo.defaults.image.url') ?? config('seo.defaults.image');
 
         if ($url) {
             return new Image(

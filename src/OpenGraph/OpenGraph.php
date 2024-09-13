@@ -58,7 +58,7 @@ class OpenGraph implements Taggable
 
     public static function getImageFromConfig(): ?Image
     {
-        $url = config('seo.opengraph.image.url') ?? config('seo.defaults.image.url');
+        $url = config('seo.opengraph.image.url') ?? config('seo.defaults.image.url') ?? config('seo.defaults.image');
 
         if ($url) {
             return new Image(

@@ -34,7 +34,7 @@ class WebPage extends Schema
 
     public static function getImageFromConfig(): ?string
     {
-        $url = config('seo.defaults.image.url');
+        $url = config('seo.defaults.image.url') ?? config('seo.defaults.image');
 
         if ($url) {
             return filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url);
