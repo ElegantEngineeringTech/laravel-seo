@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method static \Elegantly\Seo\SeoManager current()
  *
- * @see \Elegantly\Seo\Seo
+ * @see \Elegantly\Seo\SeoManager
  */
 class SeoManager extends Facade
 {
