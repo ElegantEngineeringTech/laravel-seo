@@ -56,8 +56,8 @@ it('renders all standard, opengraph and twitter tags', function () {
         $manager->toTags()->toHtml()
     )->toBe(implode("\n", [
         '<title >Foo</title>',
-        '<meta name="description" content="Bar" />',
         '<link rel="canonical" href="https://example.com/standard" />',
+        '<meta name="description" content="Bar" />',
         '<link rel="alternate" hreflang="en" href="https://example.com/standard/en" />',
         '<link rel="alternate" hreflang="fr" href="https://example.com/standard/fr" />',
         //

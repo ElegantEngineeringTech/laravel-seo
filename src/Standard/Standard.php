@@ -7,7 +7,6 @@ use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Link;
 use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Tags\Title;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Request;
 
 /**
@@ -72,52 +71,43 @@ class Standard implements Taggable
 
     public function toTags(): SeoTags
     {
-        $tags = new SeoTags([
-            new Title(
-                content: $this->title,
-            ),
-        ]);
+        $tags = new SeoTags;
 
-        if ($this->description) {
-            $tags->push(new Meta(
-                name: 'description',
-                content: $this->description,
-            ));
-        }
+        $items = get_object_vars($this);
 
-        if (! empty($this->keywords)) {
-            $tags->push(new Meta(
-                name: 'keywords',
-                content: implode(',', Arr::wrap($this->keywords)),
-            ));
-        }
+        foreach ($items as $key => $value) {
+            if (blank($value)) {
+                continue;
+            }
 
-        if ($this->robots) {
-            $tags->push(new Meta(
-                name: 'robots',
-                content: $this->robots,
-            ));
-        }
-
-        if ($this->sitemap) {
-            $tags->push(new Link(
-                rel: 'sitemap',
-                href: $this->sitemap,
-                title: 'Sitemap',
-                type: 'application/xml',
-            ));
-        }
-
-        if ($this->canonical) {
-            $tags->push(new Link(
-                rel: 'canonical',
-                href: $this->canonical,
-            ));
-        }
-
-        if ($this->alternates) {
-            foreach ($this->alternates as $alternate) {
-                $tags->push(...$alternate->toTags());
+            if ($key === 'title') {
+                $tags->push(new Title(
+                    content: $value,
+                ));
+            } elseif ($key === 'sitemap') {
+                $tags->push(new Link(
+                    rel: $key,
+                    href: $value,
+                    title: 'Sitemap',
+                    type: 'application/xml',
+                ));
+            } elseif ($key === 'canonical') {
+                $tags->push(new Link(
+                    rel: $key,
+                    href: $value,
+                ));
+            } elseif ($key === 'alternates') {
+                /**
+                 * @var Taggable[] $value
+                 */
+                foreach ($value as $item) {
+                    $tags->push(...$item->toTags());
+                }
+            } else {
+                $tags->push(new Meta(
+                    name: $key,
+                    content: is_array($value) ? implode(',', $value) : $value,
+                ));
             }
         }
 

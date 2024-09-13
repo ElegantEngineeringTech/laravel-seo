@@ -23,9 +23,9 @@ it('renders default seo from config using Facade', function () {
     )->toBe(implode("\n", [
         // standard
         '<title >'.$title.'</title>',
+        '<link rel="canonical" href="'.$url.'" />',
         '<meta name="description" content="'.$description.'" />',
         '<meta name="robots" content="'.$robots.'" />',
-        '<link rel="canonical" href="'.$url.'" />',
         // opengraph
         '<meta property="og:title" content="'.$title.'" />',
         '<meta property="og:url" content="'.$url.'" />',

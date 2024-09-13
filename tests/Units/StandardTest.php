@@ -9,6 +9,7 @@ it('renders standard tags', function () {
         canonical: 'https://example.com/standard',
         description: 'Bar',
         keywords: ['foo', 'bar'],
+        author: 'Quentin Gabriele',
         alternates: [
             new Alternate(
                 hreflang: 'en',
@@ -25,9 +26,10 @@ it('renders standard tags', function () {
         $opengraph->toTags()->toHtml()
     )->toBe(implode("\n", [
         '<title >Foo</title>',
+        '<link rel="canonical" href="https://example.com/standard" />',
+        '<meta name="author" content="Quentin Gabriele" />',
         '<meta name="description" content="Bar" />',
         '<meta name="keywords" content="foo,bar" />',
-        '<link rel="canonical" href="https://example.com/standard" />',
         '<link rel="alternate" hreflang="en" href="https://example.com/standard/en" />',
         '<link rel="alternate" hreflang="fr" href="https://example.com/standard/fr" />',
     ]));
