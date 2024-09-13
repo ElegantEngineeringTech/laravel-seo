@@ -6,13 +6,13 @@ use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\OpenGraph\Verticals\Website;
 use Elegantly\Seo\SeoManager;
 use Elegantly\Seo\Standard\Alternate;
-use Elegantly\Seo\Standard\StandardData;
+use Elegantly\Seo\Standard\Standard;
 use Elegantly\Seo\Twitter\Cards\Summary;
 use Elegantly\Seo\Twitter\Image as TwitterImage;
 
 it('renders all standard, opengraph and twitter tags', function () {
     $manager = new SeoManager(
-        standard: new StandardData(
+        standard: new Standard(
             title: 'Foo',
             canonical: 'https://example.com/standard',
             description: 'Bar',

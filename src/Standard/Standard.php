@@ -10,7 +10,10 @@ use Elegantly\Seo\Tags\Title;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Request;
 
-class StandardData implements Taggable
+/**
+ * @see https://developer.mozilla.org/fr/docs/Web/HTML/Element/meta/name
+ */
+class Standard implements Taggable
 {
     /**
      * @param  null|string|string[]  $keywords
@@ -19,8 +22,13 @@ class StandardData implements Taggable
     public function __construct(
         public string $title,
         public string $canonical,
+        public ?string $author = null,
         public ?string $description = null,
+        public ?string $generator = null,
         public null|string|array $keywords = null,
+        public ?string $referrer = null,
+        public ?string $themeColor = null,
+        public ?string $colorScheme = null,
         public ?string $robots = null,
         public ?string $sitemap = null,
         public ?array $alternates = null,
@@ -35,17 +43,27 @@ class StandardData implements Taggable
     public static function default(
         ?string $title = null,
         ?string $canonical = null,
+        ?string $author = null,
         ?string $description = null,
+        ?string $generator = null,
         null|string|array $keywords = null,
+        ?string $referrer = null,
+        ?string $themeColor = null,
+        ?string $colorScheme = null,
         ?string $robots = null,
         ?string $sitemap = null,
         ?array $alternates = null,
     ): self {
         return new self(
-            title: $title ?? __(config('seo.defaults.title') ?? config('app.name')),
+            title: $title ?? config('seo.defaults.title') ?? config('app.name'),
             canonical: $canonical ?? Request::url(),
-            description: $description ?? __(config('seo.defaults.description')),
-            keywords: $keywords ?? __(config('seo.defaults.keywords')),
+            author: $author ?? config('seo.defaults.author'),
+            description: $description ?? config('seo.defaults.description'),
+            generator: $generator ?? config('seo.defaults.generator'),
+            keywords: $keywords ?? config('seo.defaults.keywords'),
+            referrer: $referrer ?? config('seo.defaults.referrer'),
+            themeColor: $themeColor ?? config('seo.defaults.theme-color'),
+            colorScheme: $colorScheme ?? config('seo.defaults.color-scheme'),
             robots: $robots ?? config('seo.defaults.robots'),
             sitemap: $sitemap ?? config('seo.defaults.sitemap'),
             alternates: $alternates,

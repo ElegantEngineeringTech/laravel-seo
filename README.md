@@ -240,7 +240,11 @@ class HomeController extends Controller
                     hreflang: "fr",
                     href: route('home', ['locale' => "fr"]),
                 ),
-            ]);
+            ])
+            ->setOpengraph(function(OpenGraph $opengraph){
+                $opengraph->title = "Custom opengraph title";
+                return $opengraph;
+            });
 
         // Using the facade
         SeoManager::current()
@@ -267,14 +271,14 @@ For more complex SEO needs, you can instantiate and configure the `SeoManager` c
 
 ```php
 use Elegantly\Seo\SeoManager;
-use Elegantly\Seo\Standard\StandardData;
+use Elegantly\Seo\Standard\Standard;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\SeoTags;
 
 $seo = new SeoManager(
-    standard: new StandardData(/* ... */),
+    standard: new Standard(/* ... */),
     opengraph: new OpenGraph(/* ... */),
     twitter: new Card(/* ... */),
     webpage: new WebPage(/* ... */),

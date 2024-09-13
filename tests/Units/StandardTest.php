@@ -1,10 +1,10 @@
 <?php
 
 use Elegantly\Seo\Standard\Alternate;
-use Elegantly\Seo\Standard\StandardData;
+use Elegantly\Seo\Standard\Standard;
 
 it('renders standard tags', function () {
-    $opengraph = new StandardData(
+    $opengraph = new Standard(
         title: 'Foo',
         canonical: 'https://example.com/standard',
         description: 'Bar',

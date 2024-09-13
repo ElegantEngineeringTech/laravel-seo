@@ -2,13 +2,14 @@
 
 namespace Elegantly\Seo;
 
+use Closure;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\OpenGraph\Locale;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Schemas\WebPage;
 use Elegantly\Seo\Standard\Alternate;
-use Elegantly\Seo\Standard\StandardData;
+use Elegantly\Seo\Standard\Standard;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Twitter\Cards\Summary;
 use Illuminate\Contracts\Support\Htmlable;
@@ -24,7 +25,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
      * @param  null|Schema[]  $schemas
      */
     public function __construct(
-        public ?StandardData $standard = null,
+        public ?Standard $standard = null,
         public ?OpenGraph $opengraph = null,
         public ?Card $twitter = null,
         public ?WebPage $webpage = null,
@@ -41,31 +42,61 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
+     * @param  null|Standard|(Closure(Standard):null|Standard)  $value
      * @return $this
      */
-    public function setOpengraph(?OpenGraph $value): static
+    public function setStandard(null|Standard|Closure $value): static
     {
-        $this->opengraph = $value;
+        if ($value instanceof Closure) {
+            $this->standard = $value($this->standard ?? Standard::default());
+        } else {
+            $this->standard = $value;
+        }
 
         return $this;
     }
 
     /**
+     * @param  null|OpenGraph|(Closure(OpenGraph):null|OpenGraph)  $value
      * @return $this
      */
-    public function setTwitter(?Card $value): static
+    public function setOpengraph(null|OpenGraph|Closure $value): static
     {
-        $this->twitter = $value;
+        if ($value instanceof Closure) {
+            $this->opengraph = $value($this->opengraph ?? OpenGraph::default());
+        } else {
+            $this->opengraph = $value;
+        }
 
         return $this;
     }
 
     /**
+     * @param  null|Card|(Closure(Card):null|Card)  $value
      * @return $this
      */
-    public function setWebpage(?WebPage $value): static
+    public function setTwitter(null|Card|Closure $value): static
     {
-        $this->webpage = $value;
+        if ($value instanceof Closure) {
+            $this->twitter = $value($this->twitter ?? Summary::default());
+        } else {
+            $this->twitter = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  null|WebPage|(Closure(WebPage):null|WebPage)  $value
+     * @return $this
+     */
+    public function setWebpage(null|WebPage|Closure $value): static
+    {
+        if ($value instanceof Closure) {
+            $this->webpage = $value($this->webpage ?? WebPage::default());
+        } else {
+            $this->webpage = $value;
+        }
 
         return $this;
     }
@@ -199,6 +230,31 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
+     * @param  null|string|string[]  $value
+     * @return $this
+     */
+    public function setKeywords(null|string|array $value): static
+    {
+        if ($this->standard) {
+            $this->standard->keywords = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function setAuthor(?string $value): static
+    {
+        if ($this->standard) {
+            $this->standard->author = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * @return $this
      */
     public function noIndexNoFollow(): static
@@ -229,14 +285,14 @@ class SeoManager implements Htmlable, Stringable, Taggable
         ?array $alternates = null,
     ): self {
         return new self(
-            standard: StandardData::default(
-                $title,
-                $url,
-                $description,
-                $keywords,
-                $robots,
-                $sitemap,
-                $alternates
+            standard: Standard::default(
+                title: $title,
+                canonical: $url,
+                description: $description,
+                keywords: $keywords,
+                robots: $robots,
+                sitemap: $sitemap,
+                alternates: $alternates
             ),
             opengraph: OpenGraph::default(
                 title: $title,
