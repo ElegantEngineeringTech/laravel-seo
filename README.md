@@ -218,6 +218,7 @@ You will typically want to define your SEO tags dynamically in your controllers.
 namespace App\Http\Controllers;
 
 use \Elegantly\Seo\Facades\SeoManager;
+use Elegantly\Seo\Standard\Alternate;
 
 class HomeController extends Controller
 {
@@ -226,14 +227,26 @@ class HomeController extends Controller
         // Using the helper
         seo()
             ->setTitle("Homepage")
+            ->setImage(asset('images/opengraph.jpg'))
             ->setDescription("The homepage description")
-            ->when($condition, fn($seo) => $seo->noIndex());
+            ->when(!App::isProduction(), fn($seo) => $seo->noIndex())
+            ->setLocale("fr")
+            ->setAlternates([
+                new Alternate(
+                    hreflang: "en",
+                    href: route('home', ['locale' => "en"]),
+                ),
+                new Alternate(
+                    hreflang: "fr",
+                    href: route('home', ['locale' => "fr"]),
+                ),
+            ]);
 
         // Using the facade
         SeoManager::current()
             ->setTitle("Homepage")
-            ->setDescription("The homepage description")
-            ->when($condition, fn($seo) => $seo->noIndex());
+            ->setDescription("The homepage description");
+            // ...
 
         return view('home');
     }

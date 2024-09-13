@@ -3,6 +3,7 @@
 namespace Elegantly\Seo;
 
 use Elegantly\Seo\Contracts\Taggable;
+use Elegantly\Seo\OpenGraph\Locale;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Schemas\WebPage;
@@ -11,6 +12,7 @@ use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Twitter\Cards\Summary;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Traits\Conditionable;
 use Stringable;
 
@@ -161,6 +163,22 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
+     * @return $this
+     */
+    public function setLocale(
+        string $value,
+    ): static {
+        if ($this->opengraph) {
+            $this->opengraph->locale = new Locale(
+                locale: $value,
+                alternate: $this->opengraph->locale?->alternate ?? [],
+            );
+        }
+
+        return $this;
+    }
+
+    /**
      * @param  null|Alternate[]  $value
      * @return $this
      */
@@ -168,6 +186,13 @@ class SeoManager implements Htmlable, Stringable, Taggable
     {
         if ($this->standard) {
             $this->standard->alternates = $value;
+        }
+
+        if ($this->opengraph) {
+            $this->opengraph->locale = new Locale(
+                locale: $this->opengraph->locale?->locale ?? App::getLocale(),
+                alternate: array_map(fn ($item) => $item->toOpenGraph(), $value ?? [])
+            );
         }
 
         return $this;

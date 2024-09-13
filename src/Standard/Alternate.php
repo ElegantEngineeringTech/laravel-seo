@@ -18,6 +18,11 @@ class Alternate implements Taggable
         //
     }
 
+    public function toOpenGraph(): string
+    {
+        return $this->hreflang;
+    }
+
     public function toTags(): SeoTags
     {
         return new SeoTags([
