@@ -27,6 +27,9 @@ class SeoManager implements Htmlable, Stringable, Taggable
         public ?SeoTags $customTags = null,
     ) {}
 
+    /**
+     * @return $this
+     */
     public function current(): static
     {
         return $this;

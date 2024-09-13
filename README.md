@@ -7,14 +7,16 @@
 
 ![laravel-seo](https://repository-images.githubusercontent.com/845966143/6ff7437c-852d-41eb-8b2f-927551506a13)
 
-This package offers an extremely flexible and advanced way to manage all of your SEO tags.
+## Introduction
 
-With this package, you will be able to implement:
+`laravel-seo` is a flexible and powerful package for managing SEO tags in Laravel applications.
 
--   The standard HTML tags (title, robots, ...)
--   [Localization](https://developers.google.com/search/docs/specialty/international/localized-versions) with alternate tags
--   [The Open Graph tags](https://ogp.me/), including structured properties, arrays, and Object Types
--   [The Twitter tags](https://developer.x.com/en/docs/x-for-websites/cards/overview/abouts-cards)
+With this package, you can easily handle:
+
+-   Standard HTML tags like `<title>` and `<meta name="robots">`
+-   Localization with alternate tags ([Google SEO Localization](https://developers.google.com/search/docs/specialty/international/localized-versions))
+-   [Open Graph tags](https://ogp.me/) with structured properties, arrays, and object types
+-   [Twitter (X) tags](https://developer.x.com/en/docs/x-for-websites/cards/overview/abouts-cards)
 -   [Structured data (JSON-LD)](https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data)
 
 ## Installation
@@ -25,13 +27,15 @@ You can install the package via Composer:
 composer require elegantly/laravel-seo
 ```
 
-You can publish the config file with:
+Next, publish the config file:
 
 ```bash
 php artisan vendor:publish --tag="seo-config"
 ```
 
-This is the content of the published config file:
+### Config File Overview
+
+The configuration file (`config/seo.php`) allows you to customize the default SEO behavior for your application. Here's a snippet with all available settings:
 
 ```php
 return [
@@ -52,7 +56,8 @@ return [
         | Default Description
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta name="description">, <meta property="og:description">, <meta name="twitter:description">
+        | This is the default value used for <meta name="description">, <meta property="og:description">,
+        | <meta name="twitter:description">
         |
         */
         'description' => null,
@@ -62,8 +67,8 @@ return [
         | Default Keywords
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta name="keywords">
-        | Type supported: string or array of strings
+        | This is the default value used for <meta name="keywords">.
+        | Supports string or array of strings.
         |
         */
         'keywords' => null,
@@ -74,7 +79,7 @@ return [
         |--------------------------------------------------------------------------
         |
         | This is the default value used for <meta property="og:image">, <meta name="twitter:image">
-        | You can use relative path like "/opengraph.png" or url like "https://example.com/opengraph.png"
+        | You can use a relative path (e.g., "/opengraph.png") or a full URL (e.g., "https://example.com/opengraph.png")
         |
         */
         'image' => null,
@@ -84,19 +89,19 @@ return [
         | Default Robots
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta name="robots">
-        | See Google documentation here: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag?hl=fr#directives
+        | This is the default value for the <meta name="robots"> tag.
+        | Refer to Google’s documentation: https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag?hl=en
         |
         */
         'robots' => 'max-snippet:-1,max-image-preview:large,max-video-preview:-1',
 
         /*
         |--------------------------------------------------------------------------
-        | Default Sitemap path
+        | Default Sitemap Path
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <link rel="sitemap">
-        | You can use relative path like "/sitemap.xml" or url like "https://example.com/sitemap.xml"
+        | This is the default value for the <link rel="sitemap"> tag.
+        | You can use a relative path (e.g., "/sitemap.xml") or a full URL (e.g., "https://example.com/sitemap.xml")
         |
         */
         'sitemap' => null,
@@ -111,8 +116,8 @@ return [
         | Default Site Name
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta property="og:site_name" />
-        | If null: config('app.name') is used.
+        | This is the default value for <meta property="og:site_name">.
+        | If null, config('app.name') will be used.
         |
         */
         'site_name' => null,
@@ -122,8 +127,8 @@ return [
         | Default Determiner
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta property="og:determiner" />
-        | Possible values are: a, an, the, "", auto
+        | This is the default value for <meta property="og:determiner">.
+        | Possible values: a, an, the, "", auto
         |
         */
         'determiner' => '',
@@ -135,10 +140,10 @@ return [
     'twitter' => [
         /*
         |--------------------------------------------------------------------------
-        | Default Twitter username
+        | Default Twitter Username
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for <meta name="twitter:site" />
+        | This is the default value for <meta name="twitter:site">.
         | Example: @X
         |
         */
@@ -151,11 +156,11 @@ return [
     'schema' => [
         /*
         |--------------------------------------------------------------------------
-        | Default WebPage schema
+        | Default WebPage Schema
         |--------------------------------------------------------------------------
         |
-        | This is the default value used for the schema WebPage
-        | @see https://schema.org/WebPage for all available properties
+        | This is the default value for the schema.org WebPage.
+        | For available properties, refer to https://schema.org/WebPage.
         |
         */
         'webpage' => [],
@@ -164,9 +169,11 @@ return [
 ];
 ```
 
-## Introduction
+## Usage
 
-You can display all the SEO tags in your view simply by calling the `seo` function like this:
+### Displaying SEO Tags
+
+You can easily render all SEO tags in your Blade views by calling the `seo()` helper function:
 
 ```php
 <head>
@@ -174,25 +181,25 @@ You can display all the SEO tags in your view simply by calling the `seo` functi
 </head>
 ```
 
-This will render all the default tags:
+This will render all the default tags, for example:
 
 ```html
 <title>Home</title>
-<meta name="robots" content="'.$robots.'" />
-<link
-    rel="canonical"
-    href="max-snippet:-1,max-image-preview:large,max-video-preview:-1"
+<meta
+    name="robots"
+    content="max-snippet:-1,max-image-preview:large,max-video-preview:-1"
 />
-<!-- opengraph -->
+<link rel="canonical" href="https://example.com" />
+<!-- Open Graph -->
 <meta property="og:title" content="Laravel" />
-<meta property="og:url" content="https://exemple.com" />
+<meta property="og:url" content="https://example.com" />
 <meta property="og:locale" content="en" />
 <meta property="og:site_name" content="Laravel" />
 <meta property="og:type" content="website" />
-<!-- twitter / X -->
+<!-- Twitter (X) -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Laravel" />
-<!-- JSON+LD -->
+<!-- JSON-LD -->
 <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -203,76 +210,61 @@ This will render all the default tags:
 </script>
 ```
 
-### Basic Usage
+### Setting SEO Tags in Controllers
 
-#### From a Controller
-
-Most of the time, your will want to define you seo tags from a controller.
-Calling the `seo()` helper will return the current `SeoManager` instance.
-This instance is available anywhere in your app through the service container.
+You will typically want to define your SEO tags dynamically in your controllers. You can do this using either the `seo()` helper or the `SeoManager` facade:
 
 ```php
 namespace App\Http\Controllers;
 
-use \Elegantly\Seo\SeoManager;
+use \Elegantly\Seo\Facades\SeoManager;
 
 class HomeController extends Controller
 {
-    function __invoke()
+    public function __invoke()
     {
-        return view('home', [
-            'seo' => seo()
-                ->setTitle("Homepage")
-                ->setDescription("The homepage description"),
-        ]);
+        // Using the helper
+        seo()->setTitle("Homepage")->setDescription("The homepage description");
+
+        // Using the facade
+        SeoManager::current()->setTitle("Homepage")->setDescription("The homepage description");
+
+        return view('home');
     }
 }
 ```
 
-Then, in your view, call `seo`:
+Then, in your Blade view, just render the tags like this:
 
 ```php
 <head>
-    {!! $seo !!}
+    {!! seo() !!}
 </head>
 ```
 
-### Advanced SEO
+### Advanced Usage
 
-If you need to define your SEO tags in a more precise or complex way, you can use `\Elegantly\Seo\SeoManager::class`.
-
-This class allows you to define every tag individually.
+For more complex SEO needs, you can instantiate and configure the `SeoManager` class directly. This gives you full control over every tag, including Open Graph, Twitter, JSON-LD, and custom schema tags.
 
 ```php
 use Elegantly\Seo\SeoManager;
-use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Schemas\Schema;
+use Elegantly\Seo\SeoTags;
 
 $seo = new SeoManager(
-    standard: new StandardData(
-        // ...
-    ),
-    opengraph: new OpenGraph(
-        // ...
-    ),
-    twitter: new Card(
-        // ...
-    ),
-    schemas: [
-        new Schema(
-            // ...
-        )
-    ],
-    customTags: new SeoTags(
-        // ...
-    ),
+    standard: new StandardData(/* ... */),
+    opengraph: new OpenGraph(/* ... */),
+    twitter: new Card(/* ... */),
+    webpage: new WebPage(/* ... */),
+    schemas: [/* ... */],
+    customTags: new SeoTags(/* ... */)
 );
 ```
 
-Then, just echo it in your view:
+Then, in your Blade view:
 
 ```php
 <head>
@@ -282,21 +274,23 @@ Then, just echo it in your view:
 
 ## Testing
 
+To run the tests:
+
 ```bash
 composer test
 ```
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+Please see [CHANGELOG](CHANGELOG.md) for details on recent updates.
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+See [CONTRIBUTING](CONTRIBUTING.md) for guidelines on contributing to this project.
 
-## Security Vulnerabilities
+## Security
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Please refer to our [security policy](../../security/policy) for reporting vulnerabilities.
 
 ## Credits
 
@@ -305,4 +299,4 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+This package is licensed under the [MIT License](LICENSE.md).
