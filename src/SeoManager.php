@@ -171,6 +171,22 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
+     * @return $this
+     */
+    public function noIndexNoFollow(): static
+    {
+        return $this->setRobots('noindex, nofollow');
+    }
+
+    /**
+     * @return $this
+     */
+    public function noIndex(): static
+    {
+        return $this->setRobots('noindex');
+    }
+
+    /**
      * @param  null|string|string[]  $keywords
      * @param  null|Alternate[]  $alternates
      */
