@@ -11,10 +11,13 @@ use Elegantly\Seo\Standard\StandardData;
 use Elegantly\Seo\Twitter\Cards\Card;
 use Elegantly\Seo\Twitter\Cards\Summary;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\Traits\Conditionable;
 use Stringable;
 
 class SeoManager implements Htmlable, Stringable, Taggable
 {
+    use Conditionable;
+
     /**
      * @param  null|Schema[]  $schemas
      */

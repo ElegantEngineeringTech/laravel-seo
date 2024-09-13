@@ -224,10 +224,16 @@ class HomeController extends Controller
     public function __invoke()
     {
         // Using the helper
-        seo()->setTitle("Homepage")->setDescription("The homepage description");
+        seo()
+            ->setTitle("Homepage")
+            ->setDescription("The homepage description")
+            ->when($condition, fn($seo) => $seo->noIndex());
 
         // Using the facade
-        SeoManager::current()->setTitle("Homepage")->setDescription("The homepage description");
+        SeoManager::current()
+            ->setTitle("Homepage")
+            ->setDescription("The homepage description")
+            ->when($condition, fn($seo) => $seo->noIndex());
 
         return view('home');
     }
