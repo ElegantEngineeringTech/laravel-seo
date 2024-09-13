@@ -255,7 +255,7 @@ class HomeController extends Controller
 
 Then, in your Blade view, just render the tags like this:
 
-```php
+```html
 <head>
     {!! seo() !!}
 </head>
@@ -285,7 +285,7 @@ $seo = new SeoManager(
 
 Then, in your Blade view:
 
-```php
+```html
 <head>
     {!! $seo !!}
 </head>
