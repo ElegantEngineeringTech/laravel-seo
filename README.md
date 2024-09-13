@@ -191,14 +191,14 @@ This will render all the default tags, for example:
 />
 <link rel="canonical" href="https://example.com" />
 <!-- Open Graph -->
-<meta property="og:title" content="Laravel" />
+<meta property="og:title" content="Home" />
 <meta property="og:url" content="https://example.com" />
 <meta property="og:locale" content="en" />
-<meta property="og:site_name" content="Laravel" />
+<meta property="og:site_name" content="My App" />
 <meta property="og:type" content="website" />
 <!-- Twitter (X) -->
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="Laravel" />
+<meta name="twitter:title" content="Home" />
 <!-- JSON-LD -->
 <script type="application/ld+json">
     {
