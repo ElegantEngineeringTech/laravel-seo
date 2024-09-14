@@ -274,11 +274,24 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
-     * @param  null|Alternate[]  $value
+     * @param  null|Alternate[]|array<string, string>  $value
      * @return $this
      */
     public function setAlternates(?array $value): static
     {
+        if ($value) {
+            $value = collect($value)
+                ->map(function ($href, $hrelang) {
+                    if ($href instanceof Alternate) {
+                        return $href;
+                    }
+
+                    return new Alternate($hrelang, $href);
+                })
+                ->values()
+                ->all();
+        }
+
         if ($this->standard) {
             $this->standard->alternates = $value;
         }

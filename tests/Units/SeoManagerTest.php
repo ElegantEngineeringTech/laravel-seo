@@ -133,3 +133,26 @@ it('can clone itself with new references', function () {
     expect($clone->customTags[0])->not->toBe($base->customTags[0]);
     expect($clone->customTags[0]->properties)->not->toBe($base->customTags[0]->properties);
 });
+
+it('can set alternates using assoc array', function () {
+    $manager = new SeoManager(
+        standard: new Standard(
+            title: 'foo',
+            canonical: 'bar',
+        ),
+        opengraph: new OpenGraph(
+            title: 'foo',
+            url: 'bar',
+        ),
+    );
+
+    $manager->setAlternates([
+        'fr' => 'example.com/fr',
+        'en' => 'example.com/en',
+        'x-default' => 'example.com/en',
+    ]);
+
+    expect($manager->standard->alternates)->toHaveLength(3);
+    expect($manager->standard->alternates[0]->hreflang)->toBe('fr');
+    expect($manager->standard->alternates[0]->href)->toBe('example.com/fr');
+});
