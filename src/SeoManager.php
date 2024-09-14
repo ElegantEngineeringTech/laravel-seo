@@ -183,7 +183,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
         return $this;
     }
 
-    public function setDescription(string $value): static
+    public function setDescription(?string $value): static
     {
         if ($this->standard) {
             $this->standard->description = $value;
@@ -216,18 +216,18 @@ class SeoManager implements Htmlable, Stringable, Taggable
         return $this;
     }
 
-    public function setImage(SeoImage|string $value): static
+    public function setImage(null|SeoImage|string $value): static
     {
-        $value = $value instanceof SeoImage ? $value : new SeoImage($value);
+        $value = is_string($value) ? new SeoImage($value) : $value;
 
         if ($this->opengraph) {
-            $this->opengraph->image = $value->toOpenGraph();
+            $this->opengraph->image = $value?->toOpenGraph();
         }
         if ($this->twitter instanceof Summary) {
-            $this->twitter->image = $value->toTwitter();
+            $this->twitter->image = $value?->toTwitter();
         }
         if ($this->webpage) {
-            $this->webpage->put('image', $value->secure_url ?? $value->url);
+            $this->webpage->put('image', $value?->secure_url ?? $value?->url);
         }
 
         return $this;
