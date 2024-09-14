@@ -6,5 +6,5 @@ use Elegantly\Seo\SeoManager;
 
 interface HasSeo
 {
-    public function getSeo(): SeoManager;
+    public function applySeo(SeoManager $manager): SeoManager;
 }

@@ -3,6 +3,7 @@
 namespace Elegantly\Seo;
 
 use Closure;
+use Elegantly\Seo\Concerns\HasSeo;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\OpenGraph\Locale;
 use Elegantly\Seo\OpenGraph\OpenGraph;
@@ -41,6 +42,25 @@ class SeoManager implements Htmlable, Stringable, Taggable
     public function current(): static
     {
         return $this;
+    }
+
+    public function apply(HasSeo $class): self
+    {
+        return $class->applySeo($this);
+    }
+
+    /**
+     * @return $this
+     */
+    public function set(SeoManager $manager): static
+    {
+        return $this
+            ->setStandard($manager->standard)
+            ->setOpengraph($manager->opengraph)
+            ->setTwitter($manager->twitter)
+            ->setWebpage($manager->webpage)
+            ->setSchemas($manager->schemas)
+            ->setCustomTags($manager->customTags);
     }
 
     /**
@@ -113,6 +133,21 @@ class SeoManager implements Htmlable, Stringable, Taggable
             $this->schemas = $value($this->schemas ?? []);
         } else {
             $this->schemas = $value;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param  null|SeoTags|(Closure(SeoTags):(null|SeoTags))  $value
+     * @return $this
+     */
+    public function setCustomTags(null|SeoTags|Closure $value): static
+    {
+        if ($value instanceof Closure) {
+            $this->customTags = $value($this->customTags ?? new SeoTags);
+        } else {
+            $this->customTags = $value;
         }
 
         return $this;

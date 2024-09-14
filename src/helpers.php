@@ -11,7 +11,7 @@ if (! function_exists('seo')) {
         }
 
         if ($value instanceof HasSeo) {
-            return $value->getSeo();
+            return \Elegantly\Seo\Facades\SeoManager::current()->apply($value);
         }
 
         return $value;
