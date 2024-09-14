@@ -286,7 +286,10 @@ class SeoManager implements Htmlable, Stringable, Taggable
         if ($this->opengraph) {
             $this->opengraph->locale = new Locale(
                 locale: $this->opengraph->locale?->locale ?? App::getLocale(),
-                alternate: array_map(fn ($item) => $item->toOpenGraph(), $value ?? [])
+                alternate: collect($value)
+                    ->where('hreflang', '!=', 'x-default')
+                    ->map(fn ($item) => $item->toOpenGraph())
+                    ->toArray()
             );
         }
 
