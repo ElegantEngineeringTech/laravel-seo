@@ -8,6 +8,8 @@ class Script extends Tag
 {
     public string $tag = 'script';
 
+    protected bool $escape = false;
+
     public function __construct(
         public ?string $type = null,
         public ?string $content = null,

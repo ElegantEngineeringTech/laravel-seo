@@ -6,8 +6,12 @@ abstract class Tag extends TagVoid
 {
     public ?string $content = null;
 
+    protected bool $escape = true;
+
     public function toHtml(): string
     {
-        return "<{$this->tag} {$this->toProperties()->join(' ')}>{$this->content}</{$this->tag}>";
+        $content = $this->escape ? e($this->content, false) : $this->content;
+
+        return "<{$this->tag} {$this->toProperties()->join(' ')}>{$content}</{$this->tag}>";
     }
 }

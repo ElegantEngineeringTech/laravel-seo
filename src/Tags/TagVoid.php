@@ -22,10 +22,16 @@ abstract class TagVoid implements Htmlable
      */
     public function toProperties(): Collection
     {
+        if (! $this->properties) {
+            return new Collection;
+        }
+
         return $this->properties
-            ?->map(fn (?string $value) => $value ? trim($value) : null)
-            ->map(fn (?string $value, string $property) => "{$property}=\"{$value}\"")
-            ?? new Collection;
+            ->map(function (string $value, string $property) {
+                $value = e(trim($value));
+
+                return "{$property}=\"{$value}\"";
+            });
     }
 
     public function toHtml(): string
