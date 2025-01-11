@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Elegantly\Seo\OpenGraph\Verticals\Profile;
 
 it('renders opengraph profile tags', function () {

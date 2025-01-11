@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Elegantly\Seo\Tags\Link;
 use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Tags\Title;

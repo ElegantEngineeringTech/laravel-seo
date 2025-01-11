@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Elegantly\Seo;
 
 use Closure;
@@ -227,7 +229,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
             $this->twitter->image = $value?->toTwitter();
         }
         if ($this->webpage) {
-            $this->webpage->put('image', $value?->secure_url ?? $value?->url);
+            $this->webpage->put('image', $value->secure_url ?? $value?->url);
         }
 
         return $this;
@@ -266,7 +268,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
         if ($this->opengraph) {
             $this->opengraph->locale = new Locale(
                 locale: $value,
-                alternate: $this->opengraph->locale?->alternate ?? [],
+                alternate: $this->opengraph->locale->alternate ?? [],
             );
         }
 
@@ -286,7 +288,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
                         return $href;
                     }
 
-                    return new Alternate($hrelang, $href);
+                    return new Alternate((string) $hrelang, $href);
                 })
                 ->values()
                 ->all();
@@ -298,7 +300,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
 
         if ($this->opengraph) {
             $this->opengraph->locale = new Locale(
-                locale: $this->opengraph->locale?->locale ?? App::getLocale(),
+                locale: $this->opengraph->locale->locale ?? App::getLocale(),
                 alternate: collect($value)
                     ->where('hreflang', '!=', 'x-default')
                     ->map(fn ($item) => $item->toOpenGraph())
@@ -389,7 +391,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
                 title: $title,
                 url: $url,
                 description: $description,
-                image: $image?->secure_url ?? $image?->url,
+                image: $image->secure_url ?? $image?->url,
             ),
         );
     }

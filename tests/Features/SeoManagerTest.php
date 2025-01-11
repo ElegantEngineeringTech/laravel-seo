@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Elegantly\Seo\Facades\SeoManager;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;

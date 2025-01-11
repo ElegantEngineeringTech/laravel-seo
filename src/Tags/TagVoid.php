@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Elegantly\Seo\Tags;
 
 use Elegantly\Seo\Traits\DeepClone;
@@ -18,7 +20,7 @@ abstract class TagVoid implements Htmlable
     public ?Collection $properties = null;
 
     /**
-     * @return Collection<string, string>
+     * @return Collection<string, non-falsy-string>
      */
     public function toProperties(): Collection
     {

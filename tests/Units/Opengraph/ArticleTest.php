@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Carbon\Carbon;
 use Elegantly\Seo\OpenGraph\Verticals\Article;
 use Elegantly\Seo\OpenGraph\Verticals\Profile;

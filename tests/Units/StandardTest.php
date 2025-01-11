@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Standard\Standard;
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Elegantly\Seo\Schemas;
 
 use Illuminate\Support\Facades\Request;

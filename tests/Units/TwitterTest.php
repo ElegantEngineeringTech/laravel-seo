@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Elegantly\Seo\Twitter\Cards\Summary;
 use Elegantly\Seo\Twitter\Cards\SummaryLargeImage;
 use Elegantly\Seo\Twitter\Image;

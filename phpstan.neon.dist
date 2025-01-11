@@ -9,4 +9,5 @@ parameters:
         - database
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
+    noEnvCallsOutsideOfConfig: false
     checkModelProperties: true
