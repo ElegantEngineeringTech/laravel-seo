@@ -18,6 +18,7 @@ class SeoTags extends Collection implements Htmlable
 
     public function toHtml(): string
     {
+        // @phpstan-ignore-next-line
         return $this->map(fn (TagVoid $tag) => $tag->toHtml())->join("\n");
     }
 }
