@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Elegantly\Seo\OpenGraph\Verticals;
 
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 
 /**
  * @see https://ogp.me/
@@ -21,9 +21,9 @@ class Article extends Vertical
      * @param  null|(string|Profile)[]  $author
      */
     public function __construct(
-        public ?Carbon $published_time = null,
-        public ?Carbon $modified_time = null,
-        public ?Carbon $expiration_time = null,
+        public ?CarbonInterface $published_time = null,
+        public ?CarbonInterface $modified_time = null,
+        public ?CarbonInterface $expiration_time = null,
         public ?array $author = null,
         public ?string $section = null,
         public ?array $tag = null,

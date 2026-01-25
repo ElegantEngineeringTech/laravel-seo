@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Elegantly\Seo\OpenGraph\Verticals;
 
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use DateTime;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\SeoTags;
@@ -31,13 +31,13 @@ abstract class Vertical implements Taggable
         );
     }
 
-    protected function formatContent(null|string|Carbon $value): ?string
+    protected function formatContent(null|string|CarbonInterface $value): ?string
     {
         if ($value === null) {
             return $value;
         }
 
-        if ($value instanceof Carbon) {
+        if ($value instanceof CarbonInterface) {
             return $value->format(DateTime::ATOM);
         }
 
