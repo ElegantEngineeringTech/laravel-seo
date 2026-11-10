@@ -199,6 +199,23 @@ return [
         |
         */
         'determiner' => '',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Video
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta property="og:video" />, rendered next to the image.
+        | iMessage plays it inline when the url points to a playable file, like an MPEG-4,
+        | rather than to a page that embeds the video. Keep the file small: Messages limits
+        | all preview assets (icons, images and videos) to 10 MB in total.
+        | It must be an array with a "url" key: a relative path like "/opengraph.mp4"
+        | or a url like "https://example.com/opengraph.mp4".
+        | Optional keys: "secure_url", "type", "width" and "height".
+        | Example: ['url' => '/opengraph.mp4', 'type' => 'video/mp4', 'width' => '1280', 'height' => '720']
+        |
+        */
+        'video' => null,
     ],
 
     /**
@@ -343,6 +360,7 @@ class HomeController extends Controller
         seo()
             ->setTitle("Homepage")
             ->setImage(asset('images/opengraph.jpg'))
+            ->setVideo(asset('videos/opengraph.mp4'))
             ->setDescription("The homepage description")
             ->when(!App::isProduction(), fn($seo) => $seo->noIndex())
             ->setLocale("fr")
@@ -379,6 +397,45 @@ Then, in your Blade view, just render the tags like this:
     {!! seo() !!}
 </head>
 ```
+
+### Video Previews in iMessage
+
+When a link is shared in Messages, iMessage can play a video inline in the preview instead of showing a still image. Use `setVideo()` to add an `og:video` tag next to your `og:image`:
+
+```php
+use Elegantly\Seo\SeoVideo;
+
+seo()
+    ->setImage(asset('images/opengraph.jpg'))
+    ->setVideo(asset('videos/opengraph.mp4'));
+
+// Or with every og:video property
+seo()->setVideo(new SeoVideo(
+    url: asset('videos/opengraph.mp4'),
+    type: 'video/mp4',
+    width: '1280',
+    height: '720',
+));
+```
+
+This renders:
+
+```html
+<meta property="og:image" content="https://example.com/images/opengraph.jpg" />
+<meta property="og:image:url" content="https://example.com/images/opengraph.jpg" />
+<meta property="og:video" content="https://example.com/videos/opengraph.mp4" />
+<meta property="og:video:url" content="https://example.com/videos/opengraph.mp4" />
+<meta property="og:video:type" content="video/mp4" />
+<meta property="og:video:width" content="1280" />
+<meta property="og:video:height" content="720" />
+```
+
+Keep the image: apps that don't play videos still show it. Following [Apple's guidelines](https://developer.apple.com/documentation/technotes/tn3156-create-rich-previews-for-messages), the video should be:
+
+-   A direct link to a playable file, like an MPEG-4. Links to a page that embeds the video won't play inline, and streams like HLS need a tap to start.
+-   Small: Messages limits all the preview assets (icons, images and videos) to 10 MB in total.
+
+To use the same video on every page, set `opengraph.video` in the config file.
 
 ### Advanced Usage
 

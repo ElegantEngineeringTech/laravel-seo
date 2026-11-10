@@ -120,3 +120,30 @@ it('requires images to be arrays', function () {
 
     SeoManager::default();
 })->throws(TypeError::class);
+
+it('renders the default video next to the default image', function () {
+    config()->set('seo.defaults.image', [SeoDefaults::class, 'image']);
+    config()->set('seo.opengraph.video', [SeoDefaults::class, 'video']);
+
+    expect(SeoManager::default()->toHtml())
+        ->toContain('<meta property="og:image" content="https://example.com/opengraph.png" />')
+        ->toContain('<meta property="og:video" content="https://example.com/opengraph.mp4" />')
+        ->toContain('<meta property="og:video:type" content="video/mp4" />');
+});
+
+it('makes relative video paths absolute', function () {
+    config()->set('seo.opengraph.video', ['url' => '/videos/opengraph.mp4']);
+
+    expect(SeoManager::default()->toHtml())
+        ->toContain('<meta property="og:video" content="'.asset('/videos/opengraph.mp4').'" />');
+});
+
+it('renders no default video without a url', function () {
+    config()->set('seo.opengraph.video', ['type' => 'video/mp4']);
+
+    expect(SeoManager::default()->toHtml())->not->toContain('og:video');
+});
+
+it('renders no default video by default', function () {
+    expect(SeoManager::default()->toHtml())->not->toContain('og:video');
+});

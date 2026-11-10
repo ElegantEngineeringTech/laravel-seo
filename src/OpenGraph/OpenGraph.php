@@ -10,6 +10,7 @@ use Elegantly\Seo\OpenGraph\Verticals\Website;
 use Elegantly\Seo\SeoConfig;
 use Elegantly\Seo\SeoImage;
 use Elegantly\Seo\SeoTags;
+use Elegantly\Seo\SeoVideo;
 use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Traits\DeepClone;
 use Illuminate\Support\Facades\App;
@@ -58,7 +59,7 @@ class OpenGraph implements Taggable
             determiner: $determiner ?? SeoConfig::get('opengraph.determiner'),
             locale: $locale ?? new Locale(App::getLocale()),
             site_name: $site_name ?? SeoConfig::get('opengraph.site_name') ?? config('app.name'),
-            video: $video,
+            video: $video ?? static::getVideoFromConfig(),
             vertical: $vertical,
         );
     }
@@ -66,6 +67,11 @@ class OpenGraph implements Taggable
     public static function getImageFromConfig(): ?Image
     {
         return SeoImage::fromConfig('opengraph')?->toOpenGraph();
+    }
+
+    public static function getVideoFromConfig(): ?Video
+    {
+        return SeoVideo::fromConfig()?->toOpenGraph();
     }
 
     public function toTags(): SeoTags

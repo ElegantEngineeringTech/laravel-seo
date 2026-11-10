@@ -8,8 +8,10 @@ use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\OpenGraph\Verticals\Website;
 use Elegantly\Seo\Schemas\Schema;
 use Elegantly\Seo\Schemas\WebPage;
+use Elegantly\Seo\SeoImage;
 use Elegantly\Seo\SeoManager;
 use Elegantly\Seo\SeoTags;
+use Elegantly\Seo\SeoVideo;
 use Elegantly\Seo\Standard\Alternate;
 use Elegantly\Seo\Standard\Standard;
 use Elegantly\Seo\Tags\Meta;
@@ -187,4 +189,66 @@ it('does not limit the description when limit is 0', function () {
     $manager = SeoManager::default()->setDescription($description, limit: 0);
 
     expect($manager->standard->description)->toBe($description);
+});
+
+it('sets the opengraph video alongside the image', function () {
+    $manager = SeoManager::default()
+        ->setImage('https://example.com/image.png')
+        ->setVideo('https://example.com/video.mp4');
+
+    expect($manager->toHtml())
+        ->toContain('<meta property="og:image" content="https://example.com/image.png" />')
+        ->toContain('<meta name="twitter:image" content="https://example.com/image.png" />')
+        ->toContain('<meta property="og:video" content="https://example.com/video.mp4" />')
+        ->not->toContain('og:video:type')
+        ->not->toContain('twitter:player');
+});
+
+it('sets every opengraph video property from a SeoVideo', function () {
+    $manager = SeoManager::default()->setVideo(new SeoVideo(
+        url: 'http://example.com/video.mp4',
+        secure_url: 'https://example.com/video.mp4',
+        type: 'video/mp4',
+        width: '1280',
+        height: '720',
+    ));
+
+    expect($manager->toHtml())
+        ->toContain('<meta property="og:video" content="http://example.com/video.mp4" />')
+        ->toContain('<meta property="og:video:secure_url" content="https://example.com/video.mp4" />')
+        ->toContain('<meta property="og:video:type" content="video/mp4" />')
+        ->toContain('<meta property="og:video:width" content="1280" />')
+        ->toContain('<meta property="og:video:height" content="720" />');
+});
+
+it('keeps the video when the image changes', function () {
+    $manager = SeoManager::default()
+        ->setVideo('https://example.com/video.mp4')
+        ->setImage(null);
+
+    expect($manager->opengraph->video?->url)->toBe('https://example.com/video.mp4');
+    expect($manager->opengraph->image)->toBeNull();
+});
+
+it('removes the video', function () {
+    $manager = SeoManager::default()
+        ->setImage('https://example.com/image.png')
+        ->setVideo('https://example.com/video.mp4')
+        ->setVideo(null);
+
+    expect($manager->toHtml())
+        ->not->toContain('og:video')
+        ->toContain('<meta property="og:image" content="https://example.com/image.png" />');
+});
+
+it('accepts a video in the default manager', function () {
+    $manager = SeoManager::default(
+        image: new SeoImage('https://example.com/image.png'),
+        video: new SeoVideo('https://example.com/video.mp4', type: 'video/mp4'),
+    );
+
+    expect($manager->toHtml())
+        ->toContain('<meta property="og:image" content="https://example.com/image.png" />')
+        ->toContain('<meta property="og:video" content="https://example.com/video.mp4" />')
+        ->toContain('<meta property="og:video:type" content="video/mp4" />');
 });

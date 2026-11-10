@@ -161,6 +161,23 @@ return [
         |
         */
         'determiner' => '',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Default Video
+        |--------------------------------------------------------------------------
+        |
+        | This is the default value used for <meta property="og:video" />, rendered next to the image.
+        | iMessage plays it inline when the url points to a playable file, like an MPEG-4,
+        | rather than to a page that embeds the video. Keep the file small: Messages limits
+        | all preview assets (icons, images and videos) to 10 MB in total.
+        | It must be an array with a "url" key: a relative path like "/opengraph.mp4"
+        | or a url like "https://example.com/opengraph.mp4".
+        | Optional keys: "secure_url", "type", "width" and "height".
+        | Example: ['url' => '/opengraph.mp4', 'type' => 'video/mp4', 'width' => '1280', 'height' => '720']
+        |
+        */
+        'video' => null,
     ],
 
     /**

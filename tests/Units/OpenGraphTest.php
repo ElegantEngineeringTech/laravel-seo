@@ -7,6 +7,7 @@ use Elegantly\Seo\OpenGraph\Locale;
 use Elegantly\Seo\OpenGraph\OpenGraph;
 use Elegantly\Seo\OpenGraph\Verticals\Article;
 use Elegantly\Seo\OpenGraph\Verticals\Website;
+use Elegantly\Seo\OpenGraph\Video;
 
 it('renders opengraph website tags', function () {
     $opengraph = new OpenGraph(
@@ -83,5 +84,37 @@ it('renders opengraph article tags', function () {
         '<meta property="article:section" content="US" />',
         '<meta property="article:tag" content="foo" />',
         '<meta property="article:tag" content="bar" />',
+    ]));
+});
+
+it('renders opengraph video tags after the image tags', function () {
+    $opengraph = new OpenGraph(
+        title: 'Foo',
+        url: 'https://example.com/opengraph',
+        image: new Image(
+            url: 'https://example.com/opengraph/image.png',
+        ),
+        video: new Video(
+            url: 'https://example.com/opengraph/video.mp4',
+            secure_url: 'https://example.com/opengraph/video.mp4',
+            type: 'video/mp4',
+            width: '1280',
+            height: '720',
+        ),
+    );
+
+    expect(
+        $opengraph->toTags()->toHtml()
+    )->toBe(implode("\n", [
+        '<meta property="og:title" content="Foo" />',
+        '<meta property="og:url" content="https://example.com/opengraph" />',
+        '<meta property="og:image" content="https://example.com/opengraph/image.png" />',
+        '<meta property="og:image:url" content="https://example.com/opengraph/image.png" />',
+        '<meta property="og:video" content="https://example.com/opengraph/video.mp4" />',
+        '<meta property="og:video:url" content="https://example.com/opengraph/video.mp4" />',
+        '<meta property="og:video:secure_url" content="https://example.com/opengraph/video.mp4" />',
+        '<meta property="og:video:type" content="video/mp4" />',
+        '<meta property="og:video:width" content="1280" />',
+        '<meta property="og:video:height" content="720" />',
     ]));
 });

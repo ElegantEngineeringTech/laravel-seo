@@ -32,4 +32,15 @@ class SeoDefaults
             'alt' => 'Default alt',
         ];
     }
+
+    /**
+     * @return array{url: string, type: string}
+     */
+    public static function video(): array
+    {
+        return [
+            'url' => 'https://example.com/opengraph.mp4',
+            'type' => 'video/mp4',
+        ];
+    }
 }

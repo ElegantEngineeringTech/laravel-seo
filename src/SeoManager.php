@@ -252,6 +252,23 @@ class SeoManager implements Htmlable, Stringable, Taggable
     }
 
     /**
+     * Sets "og:video", rendered next to "og:image".
+     * iMessage plays it inline when the url points to a playable file, like an MPEG-4.
+     *
+     * @return $this
+     */
+    public function setVideo(null|SeoVideo|string $value): static
+    {
+        $value = is_string($value) ? new SeoVideo($value) : $value;
+
+        if ($this->opengraph) {
+            $this->opengraph->video = $value?->toOpenGraph();
+        }
+
+        return $this;
+    }
+
+    /**
      * @return $this
      */
     public function setRobots(?string $value): static
@@ -381,6 +398,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
         ?string $robots = null,
         ?string $sitemap = null,
         ?array $alternates = null,
+        ?SeoVideo $video = null,
     ): self {
         return new self(
             standard: Standard::default(
@@ -397,6 +415,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
                 url: $url,
                 description: $description,
                 image: $image?->toOpenGraph(),
+                video: $video?->toOpenGraph(),
             ),
             twitter: Summary::default(
                 title: $title,
