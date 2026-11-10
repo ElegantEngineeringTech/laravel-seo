@@ -3,7 +3,10 @@ name: Fix PHP code style issues
 on:
   push:
     paths:
-      - '**.php'
+      - "**.php"
+      - ".github/workflows/fix-php-code-style-issues.yml"
+      - "composer.json"
+      - "composer.lock"
 
 permissions:
   contents: write
@@ -11,7 +14,6 @@ permissions:
 jobs:
   php-code-styling:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
 
     steps:
       - name: Checkout code

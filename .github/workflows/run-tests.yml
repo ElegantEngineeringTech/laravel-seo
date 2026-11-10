@@ -1,6 +1,7 @@
-name: run-tests
+name: Tests
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - "**.php"
@@ -17,14 +18,12 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.4, 8.3]
-        laravel: [12.*, 11.*]
+        php: [8.5]
+        laravel: [13.*]
         stability: [prefer-stable]
         include:
-          - laravel: 12.*
-            testbench: 10.*
-          - laravel: 11.*
-            testbench: 9.*
+          - laravel: 13.*
+            testbench: 11.*
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }} - ${{ matrix.os }}
 
@@ -53,4 +52,4 @@ jobs:
         run: composer show -D
 
       - name: Execute tests
-        run: vendor/bin/pest --ci
+        run: vendor/bin/pest --no-coverage --ci
