@@ -283,7 +283,7 @@ class SeoManager implements Htmlable, Stringable, Taggable
     /**
      * @return $this
      */
-    public function setSitmap(?string $value): static
+    public function setSitemap(?string $value): static
     {
         if ($this->standard) {
             $this->standard->sitemap = $value;
