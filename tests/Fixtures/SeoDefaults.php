@@ -14,6 +14,11 @@ class SeoDefaults
         return "Title ({$app->getLocale()})";
     }
 
+    public function titleTemplate(Application $app): string
+    {
+        return ":title | App ({$app->getLocale()})";
+    }
+
     public function description(): string
     {
         return match (App::getLocale()) {

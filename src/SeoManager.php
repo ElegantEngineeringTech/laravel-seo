@@ -167,10 +167,21 @@ class SeoManager implements Htmlable, Stringable, Taggable
         });
     }
 
-    public function setTitle(string $value): static
+    /**
+     * Sets the title of every tag. Only the <title> tag is wrapped in the template:
+     * "og:title", "twitter:title" and the JSON-LD name keep the bare title.
+     *
+     * @param  string|false|null  $template  A template like ":title | My App".
+     *                                       null uses the "defaults.title_template" config value,
+     *                                       false renders the title as is.
+     */
+    public function setTitle(string $value, string|false|null $template = null): static
     {
         if ($this->standard) {
+            $template ??= SeoConfig::get('defaults.title_template');
+
             $this->standard->title = $value;
+            $this->standard->titleTemplate = $template ?: null;
         }
         if ($this->opengraph) {
             $this->opengraph->title = $value;

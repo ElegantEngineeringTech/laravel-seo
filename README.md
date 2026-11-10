@@ -67,6 +67,19 @@ return [
 
         /*
         |--------------------------------------------------------------------------
+        | Default Title Template
+        |--------------------------------------------------------------------------
+        |
+        | This template wraps the titles set with seo()->setTitle() in the <title> tag.
+        | Use ":title" as the placeholder, for example ":title | My App".
+        | The default title above, "og:title", "twitter:title" and the JSON-LD name
+        | are never wrapped. Set to null to render titles as they are.
+        |
+        */
+        'title_template' => null,
+
+        /*
+        |--------------------------------------------------------------------------
         | Default Description
         |--------------------------------------------------------------------------
         |
@@ -396,6 +409,60 @@ Then, in your Blade view, just render the tags like this:
 <head>
     {!! seo() !!}
 </head>
+```
+
+### Title Templates
+
+To add your brand to every page title, set a template in the config, with `:title` as the placeholder:
+
+```php
+// config/seo.php
+'defaults' => [
+    'title' => 'My App',
+    'title_template' => ':title | My App',
+],
+```
+
+Titles set with `setTitle()` are then wrapped in the `<title>` tag:
+
+```php
+seo()->setTitle('Blog');
+```
+
+```html
+<title>Blog | My App</title>
+<meta property="og:title" content="Blog" />
+<meta name="twitter:title" content="Blog" />
+```
+
+Only the `<title>` tag is wrapped: social networks already show the site name from `og:site_name`, and the JSON-LD `name` is the name of the page itself. The default title is never wrapped either, so a page that doesn't call `setTitle()` shows `My App`, not `My App | My App`.
+
+You can render a title as is, or use another template for a single page:
+
+```php
+seo()->setTitle('My App: the best app', template: false);
+// <title>My App: the best app</title>
+
+seo()->setTitle('Installation', template: ':title · Docs · My App');
+// <title>Installation · Docs · My App</title>
+```
+
+Like any other config value, the template can be computed at runtime, for example to depend on the section of your site or on the current locale:
+
+```php
+// config/seo.php
+'title_template' => [\App\Seo\SeoDefaults::class, 'titleTemplate'],
+```
+
+```php
+public function titleTemplate(Request $request): string
+{
+    if ($request->routeIs('docs.*')) {
+        return ':title · Docs · '.config('app.name');
+    }
+
+    return ':title | '.config('app.name');
+}
 ```
 
 ### Video Previews in iMessage

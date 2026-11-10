@@ -23,6 +23,7 @@ class Standard implements Taggable
     /**
      * @param  null|string|string[]  $keywords
      * @param  null|Alternate[]  $alternates
+     * @param  null|string  $titleTemplate  Wraps the title in the <title> tag, like ":title | My App"
      */
     public function __construct(
         public string $title,
@@ -37,6 +38,7 @@ class Standard implements Taggable
         public ?string $robots = null,
         public ?string $sitemap = null,
         public ?array $alternates = null,
+        public ?string $titleTemplate = null,
     ) {
         //
     }
@@ -75,6 +77,15 @@ class Standard implements Taggable
         );
     }
 
+    public function renderTitle(): string
+    {
+        if (blank($this->title) || blank($this->titleTemplate)) {
+            return $this->title;
+        }
+
+        return strtr($this->titleTemplate, [':title' => $this->title]);
+    }
+
     public function toTags(): SeoTags
     {
         $tags = new SeoTags;
@@ -82,13 +93,13 @@ class Standard implements Taggable
         $items = get_object_vars($this);
 
         foreach ($items as $key => $value) {
-            if (blank($value)) {
+            if (blank($value) || $key === 'titleTemplate') {
                 continue;
             }
 
             if ($key === 'title') {
                 $tags->push(new Title(
-                    content: $value,
+                    content: $this->renderTitle(),
                 ));
             } elseif ($key === 'sitemap') {
                 $tags->push(new Link(

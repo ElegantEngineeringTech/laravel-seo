@@ -29,6 +29,19 @@ return [
 
         /*
         |--------------------------------------------------------------------------
+        | Default Title Template
+        |--------------------------------------------------------------------------
+        |
+        | This template wraps the titles set with seo()->setTitle() in the <title> tag.
+        | Use ":title" as the placeholder, for example ":title | My App".
+        | The default title above, "og:title", "twitter:title" and the JSON-LD name
+        | are never wrapped. Set to null to render titles as they are.
+        |
+        */
+        'title_template' => null,
+
+        /*
+        |--------------------------------------------------------------------------
         | Default Description
         |--------------------------------------------------------------------------
         |
