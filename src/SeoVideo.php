@@ -26,7 +26,7 @@ class SeoVideo
 
     public static function fromConfig(?string $scope = null): ?self
     {
-        /** @var null|array{url?: string, secure_url?: string, type?: string, width?: string, height?: string} $video */
+        /** @var array{url?: string, secure_url?: string, type?: string, width?: string, height?: string} $video */
         $video = array_merge(
             SeoConfig::get('defaults.video') ?? [],
             $scope ? (SeoConfig::get("{$scope}.video") ?? []) : [],

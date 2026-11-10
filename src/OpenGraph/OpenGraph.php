@@ -71,7 +71,7 @@ class OpenGraph implements Taggable
 
     public static function getVideoFromConfig(): ?Video
     {
-        return SeoVideo::fromConfig()?->toOpenGraph();
+        return SeoVideo::fromConfig('opengraph')?->toOpenGraph();
     }
 
     public function toTags(): SeoTags
