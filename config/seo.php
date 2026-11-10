@@ -4,6 +4,18 @@ declare(strict_types=1);
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Dynamic values
+    |--------------------------------------------------------------------------
+    |
+    | Any value below can be computed at runtime, for example to depend on the
+    | current locale. Use a class and method pair: [SeoDefaults::class, 'title'].
+    | The method is called through the container and the config stays
+    | compatible with "config:cache".
+    |
+    */
+
     'defaults' => [
         /*
         |--------------------------------------------------------------------------
@@ -89,11 +101,14 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Default Image path
+        | Default Image
         |--------------------------------------------------------------------------
         |
         | This is the default value used for <meta property="og:image">, <meta name="twitter:image">
-        | You can use relative path like "/opengraph.png" or url like "https://example.com/opengraph.png"
+        | and the JSON-LD WebPage image. It must be an array with a "url" key: a relative path
+        | like "/opengraph.png" or a url like "https://example.com/opengraph.png".
+        | Optional keys: "type", "width", "height" and "alt".
+        | Example: ['url' => '/opengraph.png', 'width' => '1200', 'height' => '630']
         |
         */
         'image' => null,

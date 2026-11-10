@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Elegantly\Seo\Twitter\Cards;
 
 use Elegantly\Seo\Contracts\Taggable;
+use Elegantly\Seo\SeoImage;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Traits\DeepClone;
@@ -35,15 +36,6 @@ abstract class Card implements Taggable
 
     public static function getImageFromConfig(): ?Image
     {
-        $url = config('seo.twitter.image.url') ?? config('seo.defaults.image.url') ?? config('seo.defaults.image');
-
-        if ($url) {
-            return new Image(
-                url: filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url),
-                alt: config('seo.twitter.image.alt') ?? config('seo.defaults.image.alt')
-            );
-        }
-
-        return null;
+        return SeoImage::fromConfig('twitter')?->toTwitter();
     }
 }

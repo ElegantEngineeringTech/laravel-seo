@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Elegantly\Seo\Twitter\Cards;
 
+use Elegantly\Seo\SeoConfig;
 use Elegantly\Seo\Twitter\Image;
 
 class Summary extends Card
@@ -29,9 +30,9 @@ class Summary extends Card
         ?Image $image = null,
     ): self {
         return new self(
-            title: $title ?? __(config('seo.twitter.title') ?? config('seo.defaults.title')),
-            site: $site ?? config('seo.twitter.site'),
-            description: $description ?? config('seo.defaults.description'),
+            title: $title ?? SeoConfig::get('twitter.title') ?? SeoConfig::get('defaults.title'),
+            site: $site ?? SeoConfig::get('twitter.site'),
+            description: $description ?? SeoConfig::get('defaults.description'),
             image: $image ?? static::getImageFromConfig(),
         );
     }

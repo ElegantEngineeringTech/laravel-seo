@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Elegantly\Seo\Schemas;
 
+use Elegantly\Seo\SeoConfig;
+use Elegantly\Seo\SeoImage;
 use Illuminate\Support\Facades\Request;
 
 class WebPage extends Schema
@@ -17,14 +19,14 @@ class WebPage extends Schema
         $schema = new self([
             '@context' => 'https://schema.org',
             '@type' => 'WebPage',
-            'name' => __(config('seo.defaults.title')),
-            'description' => __(config('seo.defaults.description')),
+            'name' => SeoConfig::get('defaults.title'),
+            'description' => SeoConfig::get('defaults.description'),
             'image' => static::getImageFromConfig(),
             'url' => Request::url(),
         ]);
 
         return $schema
-            ->merge(config('seo.schema.webpage', []))
+            ->merge(SeoConfig::get('schema.webpage') ?? [])
             ->merge(array_filter([
                 'name' => $title,
                 'description' => $description,
@@ -36,12 +38,6 @@ class WebPage extends Schema
 
     public static function getImageFromConfig(): ?string
     {
-        $url = config('seo.defaults.image.url') ?? config('seo.defaults.image');
-
-        if ($url) {
-            return filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url);
-        }
-
-        return null;
+        return SeoImage::fromConfig()?->url;
     }
 }

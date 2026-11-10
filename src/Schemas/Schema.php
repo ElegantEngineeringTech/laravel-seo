@@ -22,7 +22,9 @@ class Schema extends Collection implements Taggable
         return new SeoTags([
             new Script(
                 type: 'application/ld+json',
-                content: $this->toJson(),
+                // Script content is rendered raw: escape "<" and ">" so values like
+                // "<!--<script>" cannot change how the browser parses the page.
+                content: $this->toJson(JSON_HEX_TAG),
             ),
         ]);
     }

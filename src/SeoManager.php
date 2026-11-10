@@ -185,8 +185,24 @@ class SeoManager implements Htmlable, Stringable, Taggable
         return $this;
     }
 
-    public function setDescription(?string $value): static
+    public function setDescription(?string $value, int $limit = 155): static
     {
+        // Decode entities before stripping tags, so encoded markup such as
+        // "&lt;script&gt;" is removed too and the result never contains tags.
+        $value = preg_replace(
+            '/<\/(?:p|div|li|h[1-6]|blockquote|ul|ol|section|article|tr)>|<br\b[^>]*>/i',
+            ' ',
+            html_entity_decode((string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+        );
+
+        $value = str(strip_tags($value ?? ''))
+            ->squish()
+            ->when(
+                $limit > 0,
+                fn ($value) => $value->limit($limit, preserveWords: true)
+            )
+            ->value() ?: null;
+
         if ($this->standard) {
             $this->standard->description = $value;
         }

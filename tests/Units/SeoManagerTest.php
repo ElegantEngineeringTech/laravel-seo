@@ -158,3 +158,33 @@ it('can set alternates using assoc array', function () {
     expect($manager->standard->alternates[0]->hreflang)->toBe('fr');
     expect($manager->standard->alternates[0]->href)->toBe('example.com/fr');
 });
+
+it('converts html descriptions to plain text', function (?string $input, ?string $expected) {
+    $manager = SeoManager::default()->setDescription($input);
+
+    expect($manager->standard->description)->toBe($expected);
+    expect($manager->opengraph->description)->toBe($expected);
+    expect($manager->twitter->description)->toBe($expected);
+    expect($manager->webpage->get('description'))->toBe($expected);
+})->with([
+    'block tags become spaces' => ['<p>Foo</p><p>Bar<br>Baz</p>', 'Foo Bar Baz'],
+    'entities are decoded' => ['Tom &amp; Jerry&#039;s &quot;show&quot;', 'Tom & Jerry\'s "show"'],
+    'encoded markup is stripped' => ['<p>Use &lt;script&gt;alert(1)&lt;/script&gt; here</p>', 'Use alert(1) here'],
+    'encoded comment opener is stripped' => ['<p>Tips &lt;!--&lt;script&gt; for devs</p>', 'Tips'],
+    'null stays null' => [null, null],
+    'markup only becomes null' => ['<p></p>', null],
+]);
+
+it('limits the description length while preserving words', function () {
+    $manager = SeoManager::default()->setDescription(str_repeat('word ', 50), limit: 22);
+
+    expect($manager->standard->description)->toBe('word word word word...');
+});
+
+it('does not limit the description when limit is 0', function () {
+    $description = trim(str_repeat('word ', 50));
+
+    $manager = SeoManager::default()->setDescription($description, limit: 0);
+
+    expect($manager->standard->description)->toBe($description);
+});

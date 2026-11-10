@@ -7,6 +7,8 @@ namespace Elegantly\Seo\OpenGraph;
 use Elegantly\Seo\Contracts\Taggable;
 use Elegantly\Seo\OpenGraph\Verticals\Vertical;
 use Elegantly\Seo\OpenGraph\Verticals\Website;
+use Elegantly\Seo\SeoConfig;
+use Elegantly\Seo\SeoImage;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Meta;
 use Elegantly\Seo\Traits\DeepClone;
@@ -48,14 +50,14 @@ class OpenGraph implements Taggable
         ?Vertical $vertical = new Website,
     ): self {
         return new self(
-            title: $title ?? __(config('seo.opengraph.title') ?? config('seo.defaults.title')),
+            title: $title ?? SeoConfig::get('opengraph.title') ?? SeoConfig::get('defaults.title'),
             url: $url ?? Request::url(),
             image: $image ?? static::getImageFromConfig(),
             audio: $audio,
-            description: $description ?? __(config('seo.opengraph.description') ?? config('seo.defaults.description')),
-            determiner: $determiner ?? config('seo.opengraph.determiner'),
+            description: $description ?? SeoConfig::get('opengraph.description') ?? SeoConfig::get('defaults.description'),
+            determiner: $determiner ?? SeoConfig::get('opengraph.determiner'),
             locale: $locale ?? new Locale(App::getLocale()),
-            site_name: $site_name ?? config('seo.opengraph.site_name') ?? config('app.name'),
+            site_name: $site_name ?? SeoConfig::get('opengraph.site_name') ?? config('app.name'),
             video: $video,
             vertical: $vertical,
         );
@@ -63,19 +65,7 @@ class OpenGraph implements Taggable
 
     public static function getImageFromConfig(): ?Image
     {
-        $url = config('seo.opengraph.image.url') ?? config('seo.defaults.image.url') ?? config('seo.defaults.image');
-
-        if ($url) {
-            return new Image(
-                url: filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url),
-                type: config('seo.opengraph.image.type') ?? config('seo.defaults.image.type'),
-                width: config('seo.opengraph.image.width') ?? config('seo.defaults.image.width'),
-                height: config('seo.opengraph.image.height') ?? config('seo.defaults.image.height'),
-                alt: config('seo.opengraph.image.alt') ?? config('seo.defaults.image.alt')
-            );
-        }
-
-        return null;
+        return SeoImage::fromConfig('opengraph')?->toOpenGraph();
     }
 
     public function toTags(): SeoTags

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Elegantly\Seo\Standard;
 
 use Elegantly\Seo\Contracts\Taggable;
+use Elegantly\Seo\SeoConfig;
 use Elegantly\Seo\SeoTags;
 use Elegantly\Seo\Tags\Link;
 use Elegantly\Seo\Tags\Meta;
@@ -59,17 +60,17 @@ class Standard implements Taggable
         ?array $alternates = null,
     ): self {
         return new self(
-            title: $title ?? config('seo.defaults.title') ?? config('app.name'),
+            title: $title ?? SeoConfig::get('defaults.title') ?? config('app.name'),
             canonical: $canonical ?? Request::url(),
-            author: $author ?? config('seo.defaults.author'),
-            description: $description ?? config('seo.defaults.description'),
-            generator: $generator ?? config('seo.defaults.generator'),
-            keywords: $keywords ?? config('seo.defaults.keywords'),
-            referrer: $referrer ?? config('seo.defaults.referrer'),
-            themeColor: $themeColor ?? config('seo.defaults.theme-color'),
-            colorScheme: $colorScheme ?? config('seo.defaults.color-scheme'),
-            robots: $robots ?? config('seo.defaults.robots'),
-            sitemap: $sitemap ?? config('seo.defaults.sitemap'),
+            author: $author ?? SeoConfig::get('defaults.author'),
+            description: $description ?? SeoConfig::get('defaults.description'),
+            generator: $generator ?? SeoConfig::get('defaults.generator'),
+            keywords: $keywords ?? SeoConfig::get('defaults.keywords'),
+            referrer: $referrer ?? SeoConfig::get('defaults.referrer'),
+            themeColor: $themeColor ?? SeoConfig::get('defaults.theme-color'),
+            colorScheme: $colorScheme ?? SeoConfig::get('defaults.color-scheme'),
+            robots: $robots ?? SeoConfig::get('defaults.robots'),
+            sitemap: $sitemap ?? SeoConfig::get('defaults.sitemap'),
             alternates: $alternates,
         );
     }

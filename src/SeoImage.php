@@ -18,6 +18,28 @@ class SeoImage
         public ?string $alt = null,
     ) {}
 
+    public static function fromConfig(?string $scope = null): ?self
+    {
+        $image = array_merge(
+            SeoConfig::get('defaults.image') ?? [],
+            $scope ? (SeoConfig::get("{$scope}.image") ?? []) : [],
+        );
+
+        $url = $image['url'] ?: null;
+
+        if (! $url) {
+            return null;
+        }
+
+        return new self(
+            url: filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url),
+            type: $image['type'] ?: null,
+            width: $image['width'] ?: null,
+            height: $image['height'] ?: null,
+            alt: $image['alt'] ?: null,
+        );
+    }
+
     public function toOpenGraph(): Image
     {
         return new Image(

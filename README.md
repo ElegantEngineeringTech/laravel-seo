@@ -40,6 +40,18 @@ The configuration file (`config/seo.php`) allows you to customize the default SE
 ```php
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Dynamic values
+    |--------------------------------------------------------------------------
+    |
+    | Any value below can be computed at runtime, for example to depend on the
+    | current locale. Use a class and method pair: [SeoDefaults::class, 'title'].
+    | The method is called through the container and the config stays
+    | compatible with "config:cache".
+    |
+    */
+
     'defaults' => [
         /*
         |--------------------------------------------------------------------------
@@ -125,11 +137,14 @@ return [
 
         /*
         |--------------------------------------------------------------------------
-        | Default Image path
+        | Default Image
         |--------------------------------------------------------------------------
         |
         | This is the default value used for <meta property="og:image">, <meta name="twitter:image">
-        | You can use relative path like "/opengraph.png" or url like "https://example.com/opengraph.png"
+        | and the JSON-LD WebPage image. It must be an array with a "url" key: a relative path
+        | like "/opengraph.png" or a url like "https://example.com/opengraph.png".
+        | Optional keys: "type", "width", "height" and "alt".
+        | Example: ['url' => '/opengraph.png', 'width' => '1200', 'height' => '630']
         |
         */
         'image' => null,
@@ -218,6 +233,54 @@ return [
 
 ];
 ```
+
+### Dynamic Default Values
+
+Any config value can be computed at runtime instead of being hard-coded, for example to depend on the current locale or tenant. Use a `[class, method]` pair:
+
+```php
+// config/seo.php
+'defaults' => [
+    'title' => [\App\Seo\SeoDefaults::class, 'title'],
+    'description' => [\App\Seo\SeoDefaults::class, 'description'],
+    'image' => [\App\Seo\SeoDefaults::class, 'image'],
+    // ...
+],
+```
+
+The method is called through the service container, so you can type-hint dependencies in its signature:
+
+```php
+namespace App\Seo;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+
+class SeoDefaults
+{
+    public function title(Request $request): string
+    {
+        return $request->user()?->team->name ?? config('app.name');
+    }
+
+    public function description(): string
+    {
+        return __('seo.description');
+    }
+
+    public static function image(): array
+    {
+        return [
+            'url' => '/images/opengraph-'.App::getLocale().'.png',
+            'alt' => __('seo.image_alt'),
+        ];
+    }
+}
+```
+
+An array is treated as a `[class, method]` pair only when its first item is an existing class. Other arrays, like a list of keywords, are used as is.
+
+Config values are never translated automatically: to use translation strings, return them from a method with `__()` as shown above.
 
 ## Usage
 
