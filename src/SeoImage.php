@@ -25,7 +25,7 @@ class SeoImage
             $scope ? (SeoConfig::get("{$scope}.image") ?? []) : [],
         );
 
-        $url = $image['url'] ?: null;
+        $url = $image['url'] ?? null;
 
         if (! $url) {
             return null;
@@ -33,10 +33,10 @@ class SeoImage
 
         return new self(
             url: filter_var($url, FILTER_VALIDATE_URL) ? $url : asset($url),
-            type: $image['type'] ?: null,
-            width: $image['width'] ?: null,
-            height: $image['height'] ?: null,
-            alt: $image['alt'] ?: null,
+            type: $image['type'] ?? null,
+            width: $image['width'] ?? null,
+            height: $image['height'] ?? null,
+            alt: $image['alt'] ?? null,
         );
     }
 
